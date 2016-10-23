@@ -1,0 +1,5 @@
+export PREFIX="/home/neos"
+export TARGET=i686-neos
+#export TARGET=x86_64-neos
+export PATH="$PREFIX/bin:$PATH"
+
