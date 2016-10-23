@@ -1,5 +1,5 @@
 cd kernel && make || exit 1
-cd -
+cd ..
 
 rm -rf iso neos.iso
 mkdir -p iso/boot/grub
