@@ -10,3 +10,8 @@ load.o: load.asm
 
 clean:
 	rm -f load *.o
+
+run: load
+	@echo ""
+	@./load
+	@echo ""

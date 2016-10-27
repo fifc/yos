@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	void *prog = malloc(1<<23);
 	len = load_elf(buf, prog);
 	free(buf);
-	printf("size of loaded program: %d\n", len);
+	printf("size of program: %d\n", len);
 
 	free(prog);
 }
