@@ -10,9 +10,19 @@ load_elf:
 	jne exit
 	cmp byte [rax+4], 2
 	jne exit
-	mov rbx, [rax+0x20]
+	mov rbx, [rdi+0x20]
 	add rax, rbx
-	mov rax, 8888
+	mov bx, word [rdi+0x36]
+	and rbx, 0xffff
+	mov cx, word[rdi+0x38]
+	and rcx, 0xffff
+ph_loop:
+	cmp dword [rax], 1
+	jne ph_continue
+ph_continue:
+	add rax, rbx
+	loop ph_loop
+	sub rax, rdi
 	ret
 exit:
 	xor rax, rax
