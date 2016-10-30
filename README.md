@@ -57,7 +57,7 @@ Build a VDI disk image for VirtualBox
 
 	./vdi.sh
 
-The VDI script rewrites the disk ID with the contents of VDI_UUID.bin to avoid the disk warning in VirtualBox.
+The VDI script rewrites the disk ID with the contents of vdi_uuid.bin to avoid the disk warning in VirtualBox.
 
 
 Programs in Assembly
@@ -87,7 +87,7 @@ NeOS should be running in the QEMU virtual machine and you should see a '>' prom
 Programs in C
 -------------
 
-C programs can be compiled to take advantage of the BareMetal system calls. Standard ANSI C calls are available via Newlib (see the Newlib section below).
+C programs can be compiled to take advantage of the NeOS system calls. Standard ANSI C calls are available via Newlib (see the Newlib section below).
 
 Automatic:
 
@@ -98,8 +98,8 @@ Manual:
 
 	cd src/
 	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o hello.o helloc.c
-	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libBareMetal.o libBareMetal.c
-	ld -T app.ld -o bin/helloc.app helloc.o libBareMetal.o
+	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libNeOS.o libNeOS.c
+	ld -T app.ld -o bin/helloc.app helloc.o libNeOS.o
 	cd bin
 	./nefs nefs.image create helloc.app 2
 	./nefs nefs.image write helloc.app
