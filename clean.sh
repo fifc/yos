@@ -3,7 +3,7 @@
 pwd=`pwd`
 rm -rf bin/
 rm -rf newlib/
-rm -f neos/os/*.o
+rm -f kernel/*.o
 cd fs && make distclean
 cd ${pwd}
 
