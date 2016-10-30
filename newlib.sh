@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -d "$newlib" ]; then
+if [ ! -d "newlib" ]; then
   mkdir newlib
 fi
 cd newlib
@@ -13,7 +13,7 @@ mkdir build
 
 echo Configuring Newlib
 
-cd ../neos/newlib/patches
+cd ../kernel/newlib/patches
 cp config.sub.patch ../../../newlib/newlib-src/
 cp configure.host.patch ../../../newlib/newlib-src/newlib/
 cp configure.in.patch ../../../newlib/newlib-src/newlib/libc/sys/
