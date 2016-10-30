@@ -596,7 +596,9 @@ elf_loop:
         mov rdi, [rax+0x10]
         mov r8, rcx
         mov rcx, [rax+0x20]
-        rep movsb
+	add rcx, 7
+	shr rcx, 3
+        rep movsq
         mov rcx, r8
 elf_continue:
         add rax, rdx

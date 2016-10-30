@@ -169,7 +169,7 @@ exit:
 	testzone_string		db 'testzone', 0
 
 	appextension:		db '.app', 0
-	prompt:			db '> ', 0
+	prompt:			db 'NeOS> ', 0
 
 ; -----------------------------------------------------------------------------
 ; os_string_find_char -- Find first location of character in a string
@@ -496,8 +496,7 @@ os_bmfs_list_done:
 
 Disk_Size_MSG: db 'Disk Size: ', 0
 MiB_MSG: db ' MiB', 13, 0
-List_MSG: db 'Name                            | Size (Byte)        | Reserved (MiB)', 13, \
-		'==========================================================================', 13, 0
+List_MSG: db 'Name                            | Size (Byte)        | Reserved (MiB)', 13, 0
 ; -----------------------------------------------------------------------------
 
 

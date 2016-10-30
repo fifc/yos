@@ -1,34 +1,31 @@
 #!/bin/sh
 
+newlib_src=newlib-git
+newlib_commit_rev=cf6e411f17be3bdce2df24911517798df4172859
+
 cd newlib
 
-if [ ! -d "newlib-2.4.0.20160923" ]; then
-	echo Downloading Newlib
-	curl -O ftp://sourceware.org/pub/newlib/newlib-2.4.0.20160923.tar.gz
-	tar zxf newlib-2.4.0.20160923.tar.gz
+if [ ! -d "${newlib_src}" ]; then
+	git clone git://sourceware.org/git/newlib-cygwin.git ${newlib_src}
+	git checkout ${newlib_commit_rev}
 fi
 mkdir -p build
 
 echo Configuring Newlib
 
-cd newlib-2.4.0.20160923
-patch < ../patches/config.sub.patch
-cd newlib
-patch < ../../patches/configure.host.patch
-cd libc/sys
-patch < ../../../../patches/configure.in.patch
-cd ../../../..
+cd ${newlib_src}
+patch < ../patch.diff
 
-mkdir newlib-2.4.0.20160923/newlib/libc/sys/neos
-cp neos/* newlib-2.4.0.20160923/newlib/libc/sys/neos/
+mkdir ${newlib_src}/newlib/libc/sys/neos
+cp neos/* ${newlib_src}/newlib/libc/sys/neos/
 
-cd newlib-2.4.0.20160923/newlib/libc/sys
+cd ${newlib_src}/newlib/libc/sys
 autoconf
 cd neos
 autoreconf
 cd ../../../../../build
 
-../newlib-2.4.0.20160923/configure --target=x86_64-pc-neos --disable-multilib
+../${newlib_src}/configure --target=x86_64-pc-neos --disable-multilib
 
 sed -i 's/TARGET=x86_64-pc-neos-/TARGET=/g' Makefile
 sed -i 's/WRAPPER) x86_64-pc-neos-/WRAPPER) /g' Makefile
@@ -47,7 +44,7 @@ cd ../../..
 
 echo Compiling test application...
 
-gcc -I newlib-2.4.0.20160923/newlib/libc/include/ -c test.c -o test.o
+gcc -I ${newlib_src}/newlib/libc/include/ -c test.c -o test.o
 ld -T app.ld -o test.app crt0.o test.o libc.a
 
 cp ../programs/libneos.* .

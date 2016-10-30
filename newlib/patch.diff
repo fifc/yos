@@ -1,0 +1,38 @@
+diff --git a/config.sub b/config.sub
+index 6d86a1e..04ecb01 100755
+--- a/config.sub
++++ b/config.sub
+@@ -1379,6 +1379,7 @@ case $os in
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+ 	      | -aos* | -aros* | -cloudabi* | -sortix* \
++	      | -neos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+diff --git a/newlib/configure.host b/newlib/configure.host
+index d471200..79099c9 100644
+--- a/newlib/configure.host
++++ b/newlib/configure.host
+@@ -565,6 +565,9 @@ case "${host}" in
+   z8k-*-coff)
+ 	sys_dir=z8ksim
+ 	;;
++  x86_64-*-neos*)
++       sys_dir=neos
++       ;;
+ esac
+ 
+ # Host specific flag settings -- usually for features that are not
+diff --git a/newlib/libc/sys/configure.in b/newlib/libc/sys/configure.in
+index bc6cb88..1d69fa0 100644
+--- a/newlib/libc/sys/configure.in
++++ b/newlib/libc/sys/configure.in
+@@ -49,6 +49,7 @@ if test -n "${sys_dir}"; then
+ 	tirtos) AC_CONFIG_SUBDIRS(tirtos) ;;
+ 	w65) AC_CONFIG_SUBDIRS(w65) ;;
+ 	z8ksim) AC_CONFIG_SUBDIRS(z8ksim) ;;
++        neos) AC_CONFIG_SUBDIRS(neos) ;;
+   esac;
+ fi
+ 
