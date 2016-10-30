@@ -4,8 +4,8 @@
    z8k-*-coff)
  	sys_dir=z8ksim
  	;;
-+  x86_64-*-baremetal*)
-+	sys_dir=baremetal
++  x86_64-*-neos*)
++	sys_dir=neos
 +	;;
  esac
  
