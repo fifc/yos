@@ -2,7 +2,7 @@
 NeOS -- License
 ===============================================================================
 
-Copyright (C) 2016 Steven Yi -- http://www.neos.co
+Copyright (C) 2016-2017 Steven Yi -- 51318027@qq.com
 
 All rights reserved.
 
