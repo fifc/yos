@@ -21,7 +21,7 @@ align 16
 ; OUT:	RAX = File I/O handler number, 0 on error
 ;	All other registers preserved
 os_file_open:
-	jmp os_bmfs_file_open
+	jmp os_nefs_file_open
 ; -----------------------------------------------------------------------------
 
 
@@ -30,7 +30,7 @@ os_file_open:
 ; IN:	RAX = File I/O handler
 ; OUT:	All registers preserved
 os_file_close:
-	jmp os_bmfs_file_close
+	jmp os_nefs_file_close
 ; -----------------------------------------------------------------------------
 
 
@@ -42,7 +42,7 @@ os_file_close:
 ; OUT:	RCX = Number of bytes read
 ;	All other registers preserved
 os_file_read:
-	jmp os_bmfs_file_read
+	jmp os_nefs_file_read
 ; -----------------------------------------------------------------------------
 
 
@@ -54,7 +54,7 @@ os_file_read:
 ; OUT:	RCX = Number of bytes written
 ;	All other registers preserved
 os_file_write:
-	jmp os_bmfs_file_write
+	jmp os_nefs_file_write
 ; -----------------------------------------------------------------------------
 
 
@@ -65,7 +65,7 @@ os_file_write:
 ;	RDX = Origin
 ; OUT:	All registers preserved
 os_file_seek:
-	jmp os_bmfs_file_seek
+	jmp os_nefs_file_seek
 ; -----------------------------------------------------------------------------
 
 
@@ -75,7 +75,7 @@ os_file_seek:
 ; OUT:	RCX = Size in bytes
 ;	Carry is set if the file was not found or an error occurred
 os_file_query:
-	jmp os_bmfs_file_query
+	jmp os_nefs_file_query
 ; -----------------------------------------------------------------------------
 
 
@@ -86,7 +86,7 @@ os_file_query:
 ;		rounded up to the nearest 2MiB)
 ; OUT:	Carry is set if the file already exists or an error occurred
 os_file_create:
-	jmp os_bmfs_file_create
+	jmp os_nefs_file_create
 ; -----------------------------------------------------------------------------
 
 
@@ -95,7 +95,7 @@ os_file_create:
 ; IN:	RSI = Memory location of file name to delete
 ; OUT:	Carry is set if the file was not found or an error occurred
 os_file_delete:
-	jmp os_bmfs_file_delete
+	jmp os_nefs_file_delete
 ; -----------------------------------------------------------------------------
 
 

@@ -106,7 +106,7 @@ Manual:
 	cd ..
 	./run.sh
 
-NeOS should be running in the QEMU virtual machine and you should see a '>' prompt. You can now run the application by typing
+NeOS should be running in the QEMU virtual machine and you should see a 'NeOS> ' prompt. You can now run the application by typing
 
 	helloc.app
 
@@ -130,6 +130,6 @@ The test application can also be built manually:
 	cd ..
 	./run.sh
 
-NeOS should be running in the QEMU virtual machine and you should see a '>' prompt. You can now run the application by typing
+NeOS should be running in the QEMU virtual machine and you should see a 'NeOS> ' prompt. You can now run the application by typing
 
 	test.app

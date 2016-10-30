@@ -1,6 +1,6 @@
-/* BareMetal File System Utility */
-/* Written by Ian Seyler of Return Infinity */
-/* v1.2.1 (2015 05 07) */
+/* NeOS File System Utility */
+/* Written by Steven Yi */
+/* v1.2.1 (2016 10 30) */
 
 /* Global includes */
 #include <stdio.h>
@@ -17,7 +17,7 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 /* Global defines */
-struct BMFSEntry
+struct NeFSEntry
 {
 	char FileName[32];
 	u64 StartingBlock;
@@ -35,7 +35,7 @@ FILE *file, *disk;
 unsigned int filesize, disksize, retval;
 char tempfilename[32], tempstring[32];
 char *filename, *diskname, *command;
-char fs_tag[] = "BMFS";
+char fs_tag[] = "NeFS";
 char s_list[] = "list";
 char s_format[] = "format";
 char s_initialize[] = "initialize";
@@ -44,7 +44,7 @@ char s_read[] = "read";
 char s_write[] = "write";
 char s_delete[] = "delete";
 char s_version[] = "version";
-struct BMFSEntry entry;
+struct NeFSEntry entry;
 void *pentry = &entry;
 char *BlockMap;
 char *FileBlocks;
@@ -52,7 +52,7 @@ char Directory[4096];
 char DiskInfo[512];
 
 /* Built-in functions */
-int findfile(char *filename, struct BMFSEntry *fileentry, int *entrynumber);
+int findfile(char *filename, struct NeFSEntry *fileentry, int *entrynumber);
 void list();
 void format();
 int initialize(char *diskname, char *size, char *mbr, char *boot, char *kernel);
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 		{
 			if (strcasecmp(s_version, argv[1]) == 0)
 			{
-				printf("BareMetal File System Utility v1.2.1 (2015 05 07)\n");
-				printf("Written by Ian Seyler @ Return Infinity (ian.seyler@returninfinity.com)\n");
+				printf("NeOS File System Utility v1.2.1 (2016 10 31)\n");
+				printf("Written by Steven Yi (51318027@qq.com)\n");
 			}
 		}
 		else
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 		printf("Error: Unable to open disk '%s'\n", diskname);
 		exit(0);
 	}
-	else								// Opened ok, is it a valid BMFS disk?
+	else								// Opened ok, is it a valid NeFS disk?
 	{
 		fseek(disk, 0, SEEK_END);
 		disksize = ftell(disk) / 1048576;			// Disk size in MiB
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
 		retval = fread(Directory, 4096, 1, disk);		// Read 4096 bytes to the Directory buffer
 		rewind(disk);
 
-		if (strcasecmp(DiskInfo, fs_tag) != 0)			// Is it a BMFS formatted disk?
+		if (strcasecmp(DiskInfo, fs_tag) != 0)			// Is it a NeFS formatted disk?
 		{
 			if (strcasecmp(s_format, command) == 0)
 			{
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				printf("Error: Not a valid BMFS drive (Disk is not BMFS formatted).\n");
+				printf("Error: Not a valid NeFS drive (Disk is not NeFS formatted).\n");
 			}
 			fclose(disk);
 			return 0;
@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
 }
 
 
-int findfile(char *filename, struct BMFSEntry *fileentry, int *entrynumber)
+int findfile(char *filename, struct NeFSEntry *fileentry, int *entrynumber)
 {
 	int tint;
 
@@ -277,7 +277,7 @@ void format()
 {
 	memset(DiskInfo, 0, 512);
 	memset(Directory, 0, 4096);
-	memcpy(DiskInfo, fs_tag, 4);                    // Add the 'BMFS' tag
+	memcpy(DiskInfo, fs_tag, 4);                    // Add the 'NeFS' tag
 	fseek(disk, 1024, SEEK_SET);                    // Seek 1KiB in for disk information
 	fwrite(DiskInfo, 512, 1, disk);                 // Write 512 bytes for the DiskInfo
 	fseek(disk, 4096, SEEK_SET);                    // Seek 4KiB in for directory
@@ -608,8 +608,8 @@ int initialize(char *diskname, char *size, char *mbr, char *boot, char *kernel)
 // helper function for qsort, sorts by StartingBlock field
 static int StartingBlockCmp(const void *pa, const void *pb)
 {
-	struct BMFSEntry *ea = (struct BMFSEntry *)pa;
-	struct BMFSEntry *eb = (struct BMFSEntry *)pb;
+	struct NeFSEntry *ea = (struct NeFSEntry *)pa;
+	struct NeFSEntry *eb = (struct NeFSEntry *)pb;
 	// empty records go to the end
 	if (ea->FileName[0] == 0x01)
 		return 1;
@@ -621,7 +621,7 @@ static int StartingBlockCmp(const void *pa, const void *pb)
 
 void create(char *filename, unsigned long long maxsize)
 {
-	struct BMFSEntry tempentry;
+	struct NeFSEntry tempentry;
 	int slot;
 
 	if (maxsize % 2 != 0)
@@ -635,7 +635,7 @@ void create(char *filename, unsigned long long maxsize)
 		int num_used_entries = 0; // how many entries of Directory are either used or deleted
 		int first_free_entry = -1; // where to put new entry
 		int tint;
-		struct BMFSEntry *pEntry;
+		struct NeFSEntry *pEntry;
 		unsigned long long new_file_start = 0;
 		unsigned long long prev_file_end = 1;
 
@@ -645,7 +645,7 @@ void create(char *filename, unsigned long long maxsize)
 		// Calculate number of files
 		for (tint = 0; tint < 64; tint++)
 		{
-			pEntry = (struct BMFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
+			pEntry = (struct NeFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
 			if (pEntry->FileName[0] == 0x00) // end of directory
 			{
 				num_used_entries = tint;
@@ -677,7 +677,7 @@ void create(char *filename, unsigned long long maxsize)
 			// and the beginning of the current file (or the last data block if there are no more files).
 
 			unsigned long long this_file_start;
-			pEntry = (struct BMFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
+			pEntry = (struct NeFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
 
 			if (tint == num_used_entries || pEntry->FileName[0] == 0x01)
 				this_file_start = num_blocks - 1; // index of the last block
@@ -701,7 +701,7 @@ void create(char *filename, unsigned long long maxsize)
 		}
 
 		// Add file record to Directory
-		pEntry = (struct BMFSEntry *)(Directory + first_free_entry * 64);
+		pEntry = (struct NeFSEntry *)(Directory + first_free_entry * 64);
 		pEntry->StartingBlock = new_file_start;
 		pEntry->ReservedBlocks = blocks_requested;
 		pEntry->FileSize = 0;
@@ -711,7 +711,7 @@ void create(char *filename, unsigned long long maxsize)
 		{
 			// here we used the record that was marked with 0x00,
 			// so make sure to mark the next record with 0x00 if it exists
-			pEntry = (struct BMFSEntry *)(Directory + (num_used_entries + 1) * 64);
+			pEntry = (struct NeFSEntry *)(Directory + (num_used_entries + 1) * 64);
 			pEntry->FileName[0] = 0x00;
 		}
 
@@ -727,17 +727,17 @@ void create(char *filename, unsigned long long maxsize)
 	}
 }
 
-// Read a file from a BMFS volume
+// Read a file from a NeFS volume
 void read(char *filename)
 {
-	struct BMFSEntry tempentry;
+	struct NeFSEntry tempentry;
 	FILE *tfile;
 	int tint, slot, retval, bytestoread;
 	char *buffer;
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
-		printf("Error: File not found in BMFS.\n");
+		printf("Error: File not found in NeFS.\n");
 	}
 	else
 	{
@@ -778,10 +778,10 @@ void read(char *filename)
 }
 
 
-// Write a file to a BMFS volume
+// Write a file to a NeFS volume
 void write(char *filename)
 {
-	struct BMFSEntry tempentry;
+	struct NeFSEntry tempentry;
 	FILE *tfile;
 	int tint, slot, retval;
 	unsigned long long tempfilesize;
@@ -789,7 +789,7 @@ void write(char *filename)
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
-		printf("Error: File not found in BMFS. A file entry must first be created.\n");
+		printf("Error: File not found in NeFS. A file entry must first be created.\n");
 	}
 	else
 	{
@@ -799,13 +799,13 @@ void write(char *filename)
 		}
 		else
 		{
-			// Is there enough room in BMFS?
+			// Is there enough room in NeFS?
 			fseek(tfile, 0, SEEK_END);
 			tempfilesize = ftell(tfile);
 			rewind(tfile);
 			if ((tempentry.ReservedBlocks*2097152) < tempfilesize)
 			{
-				printf("Error: Not enough reserved space in BMFS.\n");
+				printf("Error: Not enough reserved space in NeFS.\n");
 			}
 			else
 			{
@@ -848,13 +848,13 @@ void write(char *filename)
 
 void delete(char *filename)
 {
-	struct BMFSEntry tempentry;
+	struct NeFSEntry tempentry;
 	char delmarker = 0x01;
 	int slot;
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
-		printf("Error: File not found in BMFS.\n");
+		printf("Error: File not found in NeFS.\n");
 	}
 	else
 	{

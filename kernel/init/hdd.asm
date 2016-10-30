@@ -12,7 +12,7 @@ align 16
 
 init_hdd:
 	call init_ahci
-	call init_bmfs
+	call init_nefs
 	ret
 
 

@@ -1,2 +1,2 @@
 bin_PROGRAMS = nefs
-bmfs_SOURCES = nefs.c
+nefs_SOURCES = nefs.c

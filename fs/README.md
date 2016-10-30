@@ -1,18 +1,18 @@
 # NeFS
 
-Utility for accessing a disk or disk image formatted with NeOS File System (BMFS).
+Utility for accessing a disk or disk image formatted with NeOS File System (NeFS).
 
 
 ## Prerequisites
 
-GCC (C compiler) and Automake are required for building the BMFS disk utility.
+GCC (C compiler) and Automake are required for building the NeFS disk utility.
 
 In Ubuntu this can be completed with the following command:
 
 	sudo apt-get install gcc automake
 
 
-## Building BMFS
+## Building NeFS
 
     autoreconf -fi
     ./configure
@@ -43,13 +43,13 @@ In Linux/Unix/Mac OS X you can also format a physical drive by passing the corre
 	sudo nefs /dev/sdc format
 
 
-## Display BMFS disk contents
+## Display NeFS disk contents
 
 	nefs disk.image list
 
 Sample output:
 
-	C:\baremetal>utils\nefs BMFS-256-flat.vmdk list
+	C:\baremetal>utils\nefs NeFS-256-flat.vmdk list
 	Disk Size: 256 MiB
 	Name                            |            Size (B)|      Reserved (MiB)
 	==========================================================================
@@ -69,17 +69,17 @@ Alternately, you can specify the reserved size after the file name. The reserved
 	nefs disk.image create FileName.Ext 4
 
 
-## Read from BMFS to a local file
+## Read from NeFS to a local file
 
 	nefs disk.image read FileName.Ext
 
 
-## Write a local file to BMFS
+## Write a local file to NeFS
 
 	nefs disk.image write FileName.Ext
 
 
-## Delete a file on BMFS
+## Delete a file on NeFS
 
 	nefs disk.image delete FileName.Ext
 

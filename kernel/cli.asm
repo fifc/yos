@@ -101,7 +101,7 @@ print_ver:
 dir:
 	mov rdi, cli_temp_string
 	mov rsi, rdi
-	call os_bmfs_file_list
+	call os_nefs_file_list
 	call os_output
 	jmp os_command_line
 
@@ -411,10 +411,10 @@ os_hex_string_to_int_exit:
 
 
 ; -----------------------------------------------------------------------------
-; os_bmfs_file_list -- Generate a list of files on disk
+; os_nefs_file_list -- Generate a list of files on disk
 ; IN:	RDI = location to store list
 ; OUT:	RDI = pointer to end of list
-os_bmfs_file_list:
+os_nefs_file_list:
 	push rdi
 	push rsi
 	push rcx
@@ -441,15 +441,15 @@ os_bmfs_file_list:
 	call os_string_copy
 	add rdi, rcx
 
-	mov rsi, bmfs_directory
+	mov rsi, nefs_directory
 	mov rbx, rsi
 
-os_bmfs_list_next:
+os_nefs_list_next:
 	cmp byte [rbx], 0x00
-	je os_bmfs_list_done
+	je os_nefs_list_done
 
 	cmp byte [rbx], 0x01
-	jle os_bmfs_list_skip
+	jle os_nefs_list_skip
 
 	mov rsi, rbx
 	call os_string_length
@@ -461,7 +461,7 @@ os_bmfs_list_next:
 	mov al, ' '
 	rep stosb
 
-	mov rax, [rbx + BMFS_DirEnt.size]
+	mov rax, [rbx + NeFS_DirEnt.size]
 	call os_int_to_string
 	dec rdi
 
@@ -470,19 +470,19 @@ os_bmfs_list_next:
 	mov al, ' '
 	rep stosb
 
-	mov rax, [rbx + BMFS_DirEnt.reserved]
+	mov rax, [rbx + NeFS_DirEnt.reserved]
 	add rax, rax
 	call os_int_to_string
 	dec rdi
 	mov al, 13
 	stosb
 
-os_bmfs_list_skip:
+os_nefs_list_skip:
 	add rbx, 64
-	cmp rbx, bmfs_directory + 0x1000
-	jne os_bmfs_list_next
+	cmp rbx, nefs_directory + 0x1000
+	jne os_nefs_list_next
 
-os_bmfs_list_done:
+os_nefs_list_done:
 	mov al, 0x00
 	stosb
 

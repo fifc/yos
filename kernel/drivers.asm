@@ -16,7 +16,7 @@ align 16
 
 %include "drivers/storage/ahci.asm"
 
-%include "drivers/filesystems/bmfs.asm"
+%include "drivers/filesystems/nefs.asm"
 
 %include "drivers/net/rtl8169.asm"
 %include "drivers/net/i8254x.asm"
