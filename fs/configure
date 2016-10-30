@@ -585,7 +585,7 @@ PACKAGE_STRING='BMFS 1.2'
 PACKAGE_BUGREPORT='ian.seyler@returninfinity.com'
 PACKAGE_URL=''
 
-ac_unique_file="src/bmfs.c"
+ac_unique_file="src/nefs.c"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>

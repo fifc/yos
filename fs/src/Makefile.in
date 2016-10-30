@@ -99,8 +99,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_nefs_OBJECTS = nefs.$(OBJEXT)
-nefs_OBJECTS = $(am_nefs_OBJECTS)
+nefs_SOURCES = nefs.c
+nefs_OBJECTS = nefs.$(OBJEXT)
 nefs_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -130,8 +130,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(nefs_SOURCES)
-DIST_SOURCES = $(nefs_SOURCES)
+SOURCES = nefs.c
+DIST_SOURCES = nefs.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -246,7 +246,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-nefs_SOURCES = nefs.c
+bmfs_SOURCES = nefs.c
 all: all-am
 
 .SUFFIXES:
