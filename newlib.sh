@@ -8,13 +8,13 @@ cd newlib
 if [ ! -d "${newlib_src}" ]; then
 	git clone git://sourceware.org/git/newlib-cygwin.git ${newlib_src}
 	git checkout ${newlib_commit_rev}
+	cd ${newlib_src}
+	patch < ../patch.diff
+	cd -
 fi
 mkdir -p build
 
 echo Configuring Newlib
-
-cd ${newlib_src}
-patch < ../patch.diff
 
 mkdir ${newlib_src}/newlib/libc/sys/neos
 cp neos/* ${newlib_src}/newlib/libc/sys/neos/
