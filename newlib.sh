@@ -9,7 +9,7 @@ if [ ! -d "${newlib_src}" ]; then
 	git clone git://sourceware.org/git/newlib-cygwin.git ${newlib_src}
 	git checkout ${newlib_commit_rev}
 	cd ${newlib_src}
-	patch < ../patch.diff
+	patch -p1 < ../patch.diff
 	cd -
 fi
 mkdir -p build

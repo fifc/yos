@@ -137,7 +137,7 @@ print_string_16:			; Output string in SI to screen
 ;------------------------------------------------------------------------------
 
 
-msg_Load db "BMFS MBR v1.0 - Loading Pure64", 0
+msg_Load db "Loading the loader ... ", 0
 msg_LoadDone db " - done.", 13, 10, "Executing...", 0
 msg_MagicFail db " - Not found!", 0
 DriveNumber db 0x00
