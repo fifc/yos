@@ -298,7 +298,7 @@ ap_reset:
 align 16
 exception_gate_00:
 	push rax
-	mov al, 0x00
+	xor al, al
 	jmp exception_gate_main
 
 align 16
@@ -480,7 +480,7 @@ next_stack:
 	jmp ap_clear			; jump to AP clear code
 
 
-int_string00 db 'NeOS - CPU ', 0
+int_string00 db 'BareMetal OS - CPU ', 0
 int_string01 db ' - Interrupt ', 0
 ; Strings for the error messages
 exc_string db 'Unknown Fatal Exception!', 0

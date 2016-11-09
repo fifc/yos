@@ -40,22 +40,45 @@ os_get_argv:
 	push rsi
 	push rcx
 	mov rsi, cli_temp_string
-	cmp al, 0x00
-	je os_get_argv_end
+	test al, al
+	jz os_get_argv_end
 	mov cl, al
 
 os_get_argv_nextchar:
 	lodsb
-	cmp al, 0x00
-	jne os_get_argv_nextchar
+	test al, al
+	jnz os_get_argv_nextchar
 	dec cl
-	cmp cl, 0
-	jne os_get_argv_nextchar
+	jnz os_get_argv_nextchar
 
 os_get_argv_end:
 	mov rax, rsi
 	pop rcx
 	pop rsi
+	ret
+; -----------------------------------------------------------------------------
+
+
+; -----------------------------------------------------------------------------
+; os_get_proc_time -- Get the current process time
+; OUT:	RAX = Current process time
+os_get_proc_time:
+	push rcx
+	mov rax, [os_ClockCounter]	; Get current time
+	mov rcx, [os_ProcessStartTime]	; Get process start time
+	sub rax, rcx			; Compute elapsed process time
+	pop rcx
+	ret
+; -----------------------------------------------------------------------------
+
+
+; -----------------------------------------------------------------------------
+; os_set_proc_start_time -- Set the process start time to the current time
+os_set_proc_start_time:
+	push rax
+	mov rax, [os_ClockCounter]
+	mov [os_ProcessStartTime], rax
+	pop rax
 	ret
 ; -----------------------------------------------------------------------------
 
@@ -67,8 +90,8 @@ os_get_argv_end:
 ; OUT:	RAX = Result
 ;	All other registers preserved
 os_system_config:
-	cmp rdx, 0
-	je os_system_config_timecounter
+	test rdx, rdx
+	jz os_system_config_timecounter
 	cmp rdx, 1
 	je os_system_config_argc
 	cmp rdx, 2
@@ -235,14 +258,14 @@ os_system_misc_reset:
 	mov rbx, rax
 	mov rsi, 0x0000000000005100	; Location in memory of the Pure64 CPU data
 os_system_misc_reset_next_ap:
-	cmp cx, 0
-	je os_system_misc_reset_no_more_aps
+	test cx, cx
+	jz os_system_misc_reset_no_more_aps
 	lodsb				; Load the CPU APIC ID
 	cmp al, bl
 	je os_system_misc_reset_skip_ap
 	call os_smp_reset		; Reset the CPU
 os_system_misc_reset_skip_ap:
-	sub cx, 1
+	dec cx
 	jmp os_system_misc_reset_next_ap
 os_system_misc_reset_no_more_aps:
 	call init_memory_map		; Clear memory table

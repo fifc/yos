@@ -38,6 +38,8 @@ _start:
 	dq os_file_delete		; 0x00A8
 	dq os_system_config		; 0x00B0
 	dq os_system_misc		; 0x00B8
+        dq os_get_proc_time             ; 0x00C0
+        dq os_set_proc_start_time       ; 0x00C8
 	align 16
 
 neos_run:
@@ -54,7 +56,7 @@ neos_run:
 	mov rsi, readymsg
 	call os_output
 	pop ax
-	sub ax, 1
+	dec ax
 	mov word [os_Screen_Cursor_Row], ax
 	mov word [os_Screen_Cursor_Col], 0
 
