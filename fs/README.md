@@ -1,6 +1,6 @@
 # NuFS
 
-Utility for accessing a disk or disk image formatted with NeOS File System (NuFS).
+Utility for accessing a disk or disk image formatted with NuOS File System (NuFS).
 
 
 ## Prerequisites
@@ -25,11 +25,11 @@ In Ubuntu this can be completed with the following command:
     nufs disk.image initialize 128M
 
 
-## Creating a new disk image that boots NeOS
+## Creating a new disk image that boots NuOS
 
     nufs disk.image initialize 128M path/to/nufs_mbr.sys path/to/pure64.sys path/to/kernel64.sys
 
-or if the Pure64 boot loader and NeOS kernel are combined into one file:
+or if the Pure64 boot loader and NuOS kernel are combined into one file:
 
     nufs disk.image initialize 128M path/to/nufs_mbr.sys path/to/software.sys
 

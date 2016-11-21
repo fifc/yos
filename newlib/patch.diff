@@ -6,7 +6,7 @@ index 6d86a1e..04ecb01 100755
  	      | -sym* | -kopensolaris* | -plan9* \
  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
  	      | -aos* | -aros* | -cloudabi* | -sortix* \
-+	      | -neos* \
++	      | -nuos* \
  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
@@ -18,8 +18,8 @@ index d471200..79099c9 100644
    z8k-*-coff)
  	sys_dir=z8ksim
  	;;
-+  x86_64-*-neos*)
-+       sys_dir=neos
++  x86_64-*-nuos*)
++       sys_dir=nuos
 +       ;;
  esac
  
@@ -32,7 +32,7 @@ index bc6cb88..1d69fa0 100644
  	tirtos) AC_CONFIG_SUBDIRS(tirtos) ;;
  	w65) AC_CONFIG_SUBDIRS(w65) ;;
  	z8ksim) AC_CONFIG_SUBDIRS(z8ksim) ;;
-+        neos) AC_CONFIG_SUBDIRS(neos) ;;
++        nuos) AC_CONFIG_SUBDIRS(nuos) ;;
    esac;
  fi
  

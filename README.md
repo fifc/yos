@@ -73,8 +73,8 @@ Manual:
 	cd nuos/programs/
 	nasm sysinfo.asm -o ../../bin/sysinfo.app
 	cd ../../bin
-	./nefs nefs.image create sysinfo.app 2
-	./nefs nefs.image write sysinfo.app
+	./nufs nufs.image create sysinfo.app 2
+	./nufs nufs.image write sysinfo.app
 	cd ..
 	./run.sh
 
@@ -101,8 +101,8 @@ Manual:
 	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libNuOS.o libNuOS.c
 	ld -T app.ld -o bin/helloc.app helloc.o libNuOS.o
 	cd bin
-	./nefs nefs.image create helloc.app 2
-	./nefs nefs.image write helloc.app
+	./nufs nufs.image create helloc.app 2
+	./nufs nufs.image write helloc.app
 	cd ..
 	./run.sh
 
@@ -125,8 +125,8 @@ The test application can also be built manually:
 	ld -T app.ld -o test.app crt0.o test.o libc.a
 	cp test.app ../bin
 	cd ../bin
-	./nefs nefs.image create test.app 2
-	./nefs nefs.image write test.app
+	./nufs nufs.image create test.app 2
+	./nufs nufs.image write test.app
 	cd ..
 	./run.sh
 

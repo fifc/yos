@@ -1,6 +1,6 @@
 #!/bin/sh
 cd bin
 echo Formatting Disk Image
-./nefs neos.image format /force
+./nufs nuos.image format /force
 echo Writing Master Boot Record
-dd if=nefs_mbr.sys of=neos.image bs=512 conv=notrunc
+dd if=nufs_mbr.sys of=nuos.image bs=512 conv=notrunc

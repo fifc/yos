@@ -1,4 +1,4 @@
-/* NeOS File System Utility */
+/* NuOS File System Utility */
 /* Written by Steven Yi */
 /* v1.2.1 (2016 10 30) */
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 		{
 			if (strcasecmp(s_version, argv[1]) == 0)
 			{
-				printf("NeOS File System Utility v1.2.1 (2016 10 31)\n");
+				printf("NuOS File System Utility v1.2.1 (2016 10 31)\n");
 				printf("Written by Steven Yi (51318027@qq.com)\n");
 			}
 		}

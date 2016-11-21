@@ -16,19 +16,19 @@ mkdir -p build
 
 echo Configuring Newlib
 
-mkdir ${newlib_src}/newlib/libc/sys/neos
-cp neos/* ${newlib_src}/newlib/libc/sys/neos/
+mkdir ${newlib_src}/newlib/libc/sys/nuos
+cp nuos/* ${newlib_src}/newlib/libc/sys/nuos/
 
 cd ${newlib_src}/newlib/libc/sys
 autoconf
-cd neos
+cd nuos
 autoreconf
 cd ../../../../../build
 
-../${newlib_src}/configure --target=x86_64-pc-neos --disable-multilib
+../${newlib_src}/configure --target=x86_64-pc-nuos --disable-multilib
 
-sed -i 's/TARGET=x86_64-pc-neos-/TARGET=/g' Makefile
-sed -i 's/WRAPPER) x86_64-pc-neos-/WRAPPER) /g' Makefile
+sed -i 's/TARGET=x86_64-pc-nuos-/TARGET=/g' Makefile
+sed -i 's/WRAPPER) x86_64-pc-nuos-/WRAPPER) /g' Makefile
 
 echo Building Newlib
 
@@ -36,7 +36,7 @@ make
 
 echo Build complete!
 
-cd x86_64-pc-neos/newlib/
+cd x86_64-pc-nuos/newlib/
 cp libc.a ../../..
 cp libm.a ../../..
 cp crt0.o ../../..
@@ -47,7 +47,7 @@ echo Compiling test application...
 gcc -I ${newlib_src}/newlib/libc/include/ -c test.c -o test.o
 ld -T app.ld -o test.app crt0.o test.o libc.a
 
-cp ../programs/libneos.* .
-gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libneos.o libneos.c
+cp ../programs/libnuos.* .
+gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libnuos.o libnuos.c
 
 echo Complete!

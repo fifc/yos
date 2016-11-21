@@ -12,7 +12,7 @@ USE64
 section .kernel
 
 _start:
-	jmp neos_run			; Skip over the function call index
+	jmp nuos_run			; Skip over the function call index
 	nop
 
 	align 16
@@ -42,7 +42,7 @@ _start:
         dq os_set_proc_start_time       ; 0x00C8
 	align 16
 
-neos_run:
+nuos_run:
 	call init_64			; After this point we are in a working 64-bit environment
 	call init_pci			; Initialize the PCI bus
 	call init_hdd			; Initialize the disk
