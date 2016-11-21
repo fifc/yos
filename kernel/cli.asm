@@ -37,7 +37,7 @@ os_command_line:
 	call os_string_compare
 	jc near clear_screen
 
-	mov rdi, dir_string		; 'DIR' entered?
+	mov rdi, ls_string		; 'DIR' entered?
 	call os_string_compare
 	jc near dir
 
@@ -155,12 +155,12 @@ exit:
 	ret
 
 ; Strings
-	help_text		db 'Built-in commands: CLS, DEBUG, DIR, HELP, REBOOT, VER', 13, 0
+	help_text		db 'Built-in commands: LS, CLS, DEBUG, HELP, REBOOT, VER', 13, 0
 	not_found_msg		db 'Command or program not found', 13, 0
 	version_msg		db 'NeOS v0.1.1', 13, 0
 
+	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
-	dir_string		db 'dir', 0
 	ver_string		db 'ver', 0
 	exit_string		db 'exit', 0
 	help_string		db 'help', 0
