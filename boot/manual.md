@@ -1,8 +1,8 @@
-# Pure64 - v0.6.1 Manual
+# NuBoot - v0.6.1 Manual
 
-Pure64 must be loaded to the 16-bit memory address `0x0000:0x8000`
+NuBoot must be loaded to the 16-bit memory address `0x0000:0x8000`
 
-Pure64 expects that the up to 26KiB of data after it is the software that will be loaded to address `0x0000000000100000`.
+NuBoot expects that the up to 26KiB of data after it is the software that will be loaded to address `0x0000000000100000`.
 
 
 ## System Requirements
@@ -18,7 +18,7 @@ The ability to boot via a hard drive, USB stick, or the network
 
 `bmfs_mbr.asm` in the bootsectors folder shows how to boot via a BMFS formatted drive.
 
-*Note*: Once Pure64 has executed you will lose access the the USB drive unless you have written a driver for it. The BIOS was used to load from it and you can't use the BIOS in 64-bit mode.
+*Note*: Once NuBoot has executed you will lose access the the USB drive unless you have written a driver for it. The BIOS was used to load from it and you can't use the BIOS in 64-bit mode.
 
 
 ## Network boot
@@ -28,7 +28,7 @@ The ability to boot via a hard drive, USB stick, or the network
 
 ## Memory Map
 
-This memory map shows how physical memory looks after Pure64 is finished.
+This memory map shows how physical memory looks after NuBoot is finished.
 
 <table border="1" cellpadding="2" cellspacing="0">
 <tr><th>Start Address</th><th>End Address</th><th>Size</th><th>Description</th></tr>
@@ -36,8 +36,8 @@ This memory map shows how physical memory looks after Pure64 is finished.
 <tr><td>0x0000000000001000</td><td>0x0000000000001FFF</td><td>4 KiB</td><td>GDT - 256 descriptors (each descriptor is 16 bytes)</td></tr>
 <tr><td>0x0000000000002000</td><td>0x0000000000002FFF</td><td>4 KiB</td><td>PML4 - 512 entries, first entry points to PDP at 0x3000</td></tr>
 <tr><td>0x0000000000003000</td><td>0x0000000000003FFF</td><td>4 KiB</td><td>PDP - 512 enties</td></tr>
-<tr><td>0x0000000000004000</td><td>0x0000000000007FFF</td><td>16 KiB</td><td>Pure64 Data</td></tr>
-<tr><td>0x0000000000008000</td><td>0x000000000000FFFF</td><td>32 KiB</td><td>Pure64 - After the OS is loaded and running this memory is free again</td></tr>
+<tr><td>0x0000000000004000</td><td>0x0000000000007FFF</td><td>16 KiB</td><td>NuBoot Data</td></tr>
+<tr><td>0x0000000000008000</td><td>0x000000000000FFFF</td><td>32 KiB</td><td>NuBoot - After the OS is loaded and running this memory is free again</td></tr>
 <tr><td>0x0000000000010000</td><td>0x000000000004FFFF</td><td>256 KiB</td><td>PD - Room to map 64 GiB</td></tr>
 <tr><td>0x0000000000050000</td><td>0x000000000009FFFF</td><td>320 KiB</td><td>Free</td></tr>
 <tr><td>0x00000000000A0000</td><td>0x00000000000FFFFF</td><td>384 KiB</td><td>ROM Area</td></tr>
@@ -52,9 +52,9 @@ When creating your Operating System or Demo you can use the sections marked free
 
 ## Information Table
 
-Pure64 stores an information table in memory that contains various pieces of data about the computer before it passes control over to the software you want it to load.
+NuBoot stores an information table in memory that contains various pieces of data about the computer before it passes control over to the software you want it to load.
 
-The Pure64 information table is located at `0x0000000000005000` and ends at `0x00000000000057FF` (2048 bytes).
+The NuBoot information table is located at `0x0000000000005000` and ends at `0x00000000000057FF` (2048 bytes).
 
 <table border="1" cellpadding="2" cellspacing="0">
 <tr><th>Memory Address</th><th>Variable Size</th><th>Name</th><th>Description</th></tr>

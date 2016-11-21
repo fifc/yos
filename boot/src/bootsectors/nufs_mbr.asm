@@ -1,5 +1,6 @@
 ; =============================================================================
-; Pure64 MBR -- a 64-bit OS loader written in Assembly for x86-64 systems
+; NuBoot MBR -- a 64-bit OS loader written in Assembly for x86-64 systems
+; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
 ;
 ; This Master Boot Record will load Pure64 from a pre-defined location on the

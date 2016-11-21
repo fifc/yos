@@ -1,5 +1,6 @@
 ; =============================================================================
-; Pure64 -- a 64-bit OS loader written in Assembly for x86-64 systems
+; NuBoot -- a 64-bit OS loader written in Assembly for x86-64 systems
+; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
 ;
 ; Loaded from the first stage. Gather information about the system while
