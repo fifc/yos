@@ -98,8 +98,8 @@ Manual:
 
 	cd src/
 	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o hello.o helloc.c
-	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libNuOS.o libNuOS.c
-	ld -T app.ld -o bin/helloc.app helloc.o libNuOS.o
+	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libnuos.o libnuos.c
+	ld -T app.ld -o bin/helloc.app helloc.o libnuos.o
 	cd bin
 	./nufs nufs.image create helloc.app 2
 	./nufs nufs.image write helloc.app
@@ -130,6 +130,6 @@ The test application can also be built manually:
 	cd ..
 	./run.sh
 
-NuOS should be running in the QEMU virtual machine and you should see a 'NuOS> ' prompt. You can now run the application by typing
+NuOS should be running in the QEMU virtual machine and you should see a 'nuos # ' prompt. You can now run the application by typing
 
 	test.app
