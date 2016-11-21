@@ -169,7 +169,7 @@ exit:
 	testzone_string		db 'testzone', 0
 
 	appextension:		db '.app', 0
-	prompt:			db 'neos> ', 0
+	prompt:			db 'neos # ', 0
 
 ; -----------------------------------------------------------------------------
 ; os_string_find_char -- Find first location of character in a string
