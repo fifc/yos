@@ -8,7 +8,7 @@
 [BITS 64]
 [ORG 0x0000000000200000]
 
-%INCLUDE "bmdev.asm"
+%INCLUDE "nudev.asm"
 
 start:					; Start of program label
 	mov rdx, 20			; Address for start of video memory
