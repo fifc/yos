@@ -1,2 +1,2 @@
-bin_PROGRAMS = nefs
-nefs_SOURCES = nefs.c
+bin_PROGRAMS = nufs
+nufs_SOURCES = nufs.c

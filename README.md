@@ -1,7 +1,7 @@
-NeOS build scripts
+NuOS build scripts
 ==========================
 
-The easiest way to create a NeOS build environment. These scripts will download and compile all of the components needed for using NeOS.
+The easiest way to create a NuOS build environment. These scripts will download and compile all of the components needed for using NuOS.
 
 
 Prerequisites
@@ -21,8 +21,8 @@ There are additional dependencies if you are planning on compiling Newlib. They 
 Initial configuration
 ---------------------
 
-	git clone https://github.com/ustime/neos.git
-	cd neos
+	git clone https://github.com/ustime/nuos.git
+	cd nuos
 	./setup.sh
 
 setup.sh automatically runs build, format, and install
@@ -70,7 +70,7 @@ Automatic:
 
 Manual:
 
-	cd neos/programs/
+	cd nuos/programs/
 	nasm sysinfo.asm -o ../../bin/sysinfo.app
 	cd ../../bin
 	./nefs nefs.image create sysinfo.app 2
@@ -79,7 +79,7 @@ Manual:
 	./run.sh
 
 
-NeOS should be running in the QEMU virtual machine and you should see a '>' prompt. You can now run the application by typing
+NuOS should be running in the QEMU virtual machine and you should see a '>' prompt. You can now run the application by typing
 
 	sysinfo.app
 
@@ -87,7 +87,7 @@ NeOS should be running in the QEMU virtual machine and you should see a '>' prom
 Programs in C
 -------------
 
-C programs can be compiled to take advantage of the NeOS system calls. Standard ANSI C calls are available via Newlib (see the Newlib section below).
+C programs can be compiled to take advantage of the NuOS system calls. Standard ANSI C calls are available via Newlib (see the Newlib section below).
 
 Automatic:
 
@@ -98,15 +98,15 @@ Manual:
 
 	cd src/
 	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o hello.o helloc.c
-	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libNeOS.o libNeOS.c
-	ld -T app.ld -o bin/helloc.app helloc.o libNeOS.o
+	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libNuOS.o libNuOS.c
+	ld -T app.ld -o bin/helloc.app helloc.o libNuOS.o
 	cd bin
 	./nefs nefs.image create helloc.app 2
 	./nefs nefs.image write helloc.app
 	cd ..
 	./run.sh
 
-NeOS should be running in the QEMU virtual machine and you should see a 'NeOS> ' prompt. You can now run the application by typing
+NuOS should be running in the QEMU virtual machine and you should see a 'NuOS> ' prompt. You can now run the application by typing
 
 	helloc.app
 
@@ -130,6 +130,6 @@ The test application can also be built manually:
 	cd ..
 	./run.sh
 
-NeOS should be running in the QEMU virtual machine and you should see a 'NeOS> ' prompt. You can now run the application by typing
+NuOS should be running in the QEMU virtual machine and you should see a 'NuOS> ' prompt. You can now run the application by typing
 
 	test.app

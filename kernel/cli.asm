@@ -157,7 +157,7 @@ exit:
 ; Strings
 	help_text		db 'Built-in commands: LS, CLS, DEBUG, HELP, REBOOT, VER', 13, 0
 	not_found_msg		db 'Command or program not found', 13, 0
-	version_msg		db 'NeOS v0.1.1', 13, 0
+	version_msg		db 'NuOS v0.1.1', 13, 0
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
@@ -169,7 +169,7 @@ exit:
 	testzone_string		db 'testzone', 0
 
 	appextension:		db '.app', 0
-	prompt:			db 'neos # ', 0
+	prompt:			db 'nuos # ', 0
 
 ; -----------------------------------------------------------------------------
 ; os_string_find_char -- Find first location of character in a string

@@ -1,7 +1,7 @@
 AC_PREREQ([2.69])
-AC_INIT([NeFS], [1.2], [51318027@qq.com])
+AC_INIT([NuFS], [1.2], [51318027@qq.com])
 AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_SRCDIR([src/nefs.c])
+AC_CONFIG_SRCDIR([src/nufs.c])
 AC_CONFIG_HEADERS([config.h])
 
 AC_PROG_CC_C99

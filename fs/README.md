@@ -1,18 +1,18 @@
-# NeFS
+# NuFS
 
-Utility for accessing a disk or disk image formatted with NeOS File System (NeFS).
+Utility for accessing a disk or disk image formatted with NeOS File System (NuFS).
 
 
 ## Prerequisites
 
-GCC (C compiler) and Automake are required for building the NeFS disk utility.
+GCC (C compiler) and Automake are required for building the NuFS disk utility.
 
 In Ubuntu this can be completed with the following command:
 
 	sudo apt-get install gcc automake
 
 
-## Building NeFS
+## Building NuFS
 
     autoreconf -fi
     ./configure
@@ -22,34 +22,34 @@ In Ubuntu this can be completed with the following command:
 
 ## Creating a new, formatted disk image
 
-    nefs disk.image initialize 128M
+    nufs disk.image initialize 128M
 
 
 ## Creating a new disk image that boots NeOS
 
-    nefs disk.image initialize 128M path/to/nefs_mbr.sys path/to/pure64.sys path/to/kernel64.sys
+    nufs disk.image initialize 128M path/to/nufs_mbr.sys path/to/pure64.sys path/to/kernel64.sys
 
 or if the Pure64 boot loader and NeOS kernel are combined into one file:
 
-    nefs disk.image initialize 128M path/to/nefs_mbr.sys path/to/software.sys
+    nufs disk.image initialize 128M path/to/nufs_mbr.sys path/to/software.sys
 
 
 ## Formatting a disk image
 
-	nefs disk.image format
+	nufs disk.image format
 
 In Linux/Unix/Mac OS X you can also format a physical drive by passing the correct path.
 
-	sudo nefs /dev/sdc format
+	sudo nufs /dev/sdc format
 
 
-## Display NeFS disk contents
+## Display NuFS disk contents
 
-	nefs disk.image list
+	nufs disk.image list
 
 Sample output:
 
-	C:\baremetal>utils\nefs NeFS-256-flat.vmdk list
+	C:\baremetal>utils\nufs NuFS-256-flat.vmdk list
 	Disk Size: 256 MiB
 	Name                            |            Size (B)|      Reserved (MiB)
 	==========================================================================
@@ -60,26 +60,26 @@ Sample output:
 
 ## Create a new file and reserve space for it
 
-	nefs disk.image create FileName.Ext
+	nufs disk.image create FileName.Ext
 
 You will be prompted for the size to reserve.
 
 Alternately, you can specify the reserved size after the file name. The reserved size is given in Megabytes and will automatically round up to an even number.
 
-	nefs disk.image create FileName.Ext 4
+	nufs disk.image create FileName.Ext 4
 
 
-## Read from NeFS to a local file
+## Read from NuFS to a local file
 
-	nefs disk.image read FileName.Ext
-
-
-## Write a local file to NeFS
-
-	nefs disk.image write FileName.Ext
+	nufs disk.image read FileName.Ext
 
 
-## Delete a file on NeFS
+## Write a local file to NuFS
 
-	nefs disk.image delete FileName.Ext
+	nufs disk.image write FileName.Ext
+
+
+## Delete a file on NuFS
+
+	nufs disk.image delete FileName.Ext
 
