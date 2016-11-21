@@ -1,7 +1,7 @@
 ; Put Pixel Test Program (v1.0, Jan 7 2014)
 ; Written by Ian Seyler
 ;
-; BareMetal compile:
+; NuOS compile:
 ; nasm putpixel.asm -o putpixel.app
 
 

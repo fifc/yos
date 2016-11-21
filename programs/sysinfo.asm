@@ -1,7 +1,7 @@
 ; System Information Program (v1.1, May 17 2013)
 ; Written by Ian Seyler
 ;
-; BareMetal compile:
+; NuOS compile:
 ; nasm sysinfo.asm -o sysinfo.app
 
 

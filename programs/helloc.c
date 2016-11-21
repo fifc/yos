@@ -14,7 +14,7 @@
 // ld -T app.ld -o helloc.app helloc.o libBareMetal.o
 
 
-#include "libBareMetal.h"
+#include "libnuos.h"
 
 int main(void)
 {

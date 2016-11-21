@@ -4,7 +4,7 @@
 ;
 ; Demo the ability to spawn multiple workloads for CPU cores to work on
 ;
-; BareMetal compile:
+; NuOS compile:
 ; nasm smptest.asm -o smptest.app
 ; -----------------------------------------------------------------------------
 
