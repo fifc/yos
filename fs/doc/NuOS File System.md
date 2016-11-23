@@ -1,6 +1,6 @@
-# New File System (NuFS) - Version 1
+# NuOS File System (NuFS) - Version 1
 
-BMFS is a new file system used by the NuOS kernel and its related systems. The design is extremely simplified compared to conventional file systems. The system is also geared more toward a small number of very large files (databases, large data files). As all files are contiguous we can also implement memory mapped disk IO. BMFS was inspired by the [RT11 File System](http://en.wikipedia.org/wiki/RT11#File_system).
+NuFS is a new file system used by the NuOS kernel and its related systems. The design is extremely simplified compared to conventional file systems. The system is also geared more toward a small number of very large files (databases, large data files). As all files are contiguous we can also implement memory mapped disk IO. BMFS was inspired by the [RT11 File System](http://en.wikipedia.org/wiki/RT11#File_system).
 
 
 ## Characteristics:
