@@ -1,10 +1,10 @@
-Building C/C++ Applications for BareMetal OS
+Building C/C++ Applications for NuOS
 ============================================
 
 Introduction
 ------------
 
-Linux is the default development environment for BareMetal OS apps since most distributions come with all of the required tools for compiling your code. This document contains the instructions necessary for compiling C/C++ applications for BareMetal OS under Linux, Mac OS X, and Windows.
+Linux is the default development environment for NuOS apps since most distributions come with all of the required tools for compiling your code. This document contains the instructions necessary for compiling C/C++ applications for NuOS under Linux, Mac OS X, and Windows.
 
 Installing the compiler in Linux
 --------------------------------

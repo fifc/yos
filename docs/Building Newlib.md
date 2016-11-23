@@ -1,12 +1,12 @@
-Building the Newlib C library for BareMetal OS
+Building the Newlib C library for NuOS
 ==============================================
 
 Introduction
 ------------
 
-This document contains the instructions necessary to build the [Newlib](http://sourceware.org/newlib/) C library for BareMetal OS. The latest version of Newlib as of this writing is 2.4.0
+This document contains the instructions necessary to build the [Newlib](http://sourceware.org/newlib/) C library for NuOS. The latest version of Newlib as of this writing is 2.4.0
 
-Newlib gives BareMetal OS access to the standard set of C library calls like `printf()`, `scanf()`, `memcpy()`, etc.
+Newlib gives NuOS access to the standard set of C library calls like `printf()`, `scanf()`, `memcpy()`, etc.
 
 These instructions are for executing on a 64-bit Linux host. Building on a 64-bit host saves us from the steps of building a cross compiler. The latest distribution of Ubuntu was used while writing this document.
 
@@ -28,9 +28,9 @@ Extract it:
 
 	tar xf newlib-2.4.0.tar.gz
 
-Download the latest BareMetal OS source code from GitHub:
+Download the latest NuOS source code from GitHub:
 
-	wget https://github.com/ReturnInfinity/BareMetal-OS/zipball/master
+	wget https://github.com/ustime/nuos/zipball/master
 
 Extract it:
 
@@ -75,7 +75,7 @@ In `newlib-2.4.0/newlib/libc/sys` create a directory called `baremetal`:
 
 	mkdir newlib-2.4.0/newlib/libc/sys/baremetal
 
-Copy the contents of the `newlib/baremetal` directory from the BareMetal OS code into the `newlib/libc/sys/baremetal` directory.
+Copy the contents of the `newlib/baremetal` directory from the NuOS code into the `newlib/libc/sys/baremetal` directory.
 
 Refresh the configuration files:
 

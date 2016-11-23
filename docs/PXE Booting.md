@@ -3,7 +3,7 @@
 Intro goes here!
 
 ## Creating the PXE boot environment
-Now that BareMetal OS supports the Intel 8254x (Intel Pro/1000) Gigabit network chipset it is possible to set up a network environment in VirtualBox?
+Now that NuOS supports the Intel 8254x (Intel Pro/1000) Gigabit network chipset it is possible to set up a network environment in VirtualBox?
 
 In this example we will use a Linux VM with 2 NIC's. One on the regular network (set to bridged mode, eth0) and one set to private (Internal Network, eth1)
 
@@ -39,9 +39,9 @@ Now start the DHCP server:
 At this point we can verify if the DCHP and TFTP services are running correctly. Create a new VM within VirtualBox with no Hard Drive. Configure a single NIC to be on the private network and set the boot order to Network first.
 
 
-## Download and build the Pure64 and BareMetal OS source
+## Download and build the Pure64 and NuOS source
 
-Now we will grab the Pure64 and BareMetal OS source code and extract it:
+Now we will grab the Pure64 and NuOS source code and extract it:
 
 Build Pure64:
 
@@ -51,11 +51,11 @@ Build Pure64:
 	cp pure64.sys ../
 	cd ..
 
-Build BareMetal OS:
+Build NuOS:
 
 In kernel64.asm you will need to comment or delete the line with "call init_hdd".
 
-	cd BareMetal-OS
+	cd nuos
 	./build.sh
 	cp kernel64.sys ../
 	cd ..
