@@ -1,6 +1,6 @@
 ; =============================================================================
-; BareMetal -- a 64-bit OS written in Assembly for x86-64 systems
-; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
+; NuOS -- a 64-bit OS written in Assembly for x86-64 systems
+; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
 ; Interrupts
 ; =============================================================================
@@ -480,7 +480,7 @@ next_stack:
 	jmp ap_clear			; jump to AP clear code
 
 
-int_string00 db 'BareMetal OS - CPU ', 0
+int_string00 db 'NuOS - CPU ', 0
 int_string01 db ' - Interrupt ', 0
 ; Strings for the error messages
 exc_string db 'Unknown Fatal Exception!', 0

@@ -156,8 +156,8 @@ exit:
 
 ; Strings
 	help_text		db 'Built-in commands: LS, CLS, DEBUG, HELP, REBOOT, VER', 13, 0
-	not_found_msg		db 'Command or program not found', 13, 0
-	version_msg		db 'NuOS v0.1.1', 13, 0
+	not_found_msg		db 'Command not found', 13, 0
+	version_msg		db 'NuOS v0.1.2', 13, 0
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
@@ -166,7 +166,7 @@ exit:
 	help_string		db 'help', 0
 	debug_string		db 'debug', 0
 	reboot_string		db 'reboot', 0
-	testzone_string		db 'testzone', 0
+	testzone_string		db 'tstz', 0
 
 	appextension:		db '.app', 0
 	prompt:			db 'nuos # ', 0
