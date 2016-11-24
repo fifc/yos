@@ -6,7 +6,7 @@ fi
 
 dd if=/dev/zero of=bin/nuos.image bs=1M count=8
 
-cd fs
+cd nufs
 autoreconf -fi
 ./configure
 make
