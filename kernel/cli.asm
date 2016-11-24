@@ -74,8 +74,31 @@ os_command_line:
 	; Program found, load and execute
 	call os_file_read
 	call os_file_close
-	call programlocation		; Call the program just loaded
+	;call programlocation		; Call the program just loaded
+	mov rsi, hello_app
+	mov rdi, 0x0000000000200000 
+	mov rcx, 64
+	rep movsq
+
+	call 0x0000000000200000 
+	cmp rax, 0x54321
+	je okgo
+	mov rsi, not_eq_msg
+	call [0x0000000000100010]
 	jmp os_command_line		; Jump back to the CLI on program completion
+	
+okgo:
+	mov rsi, success_msg
+	call [0x0000000000100010]
+	jmp os_command_line
+not_eq_msg db 'Not 0x54321', 13, 0
+success_msg db 'success!', 13, 0
+dbg_buff	times 20 db 0
+
+;hello_app dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x206f, 0x754e, 0x534f, 0x0d21, 0x0000
+;hello_app dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
+hello_app dw 0x21b8, 0x0543, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
+times 64 - ($ - hello_app) db 0
 
 fail:					; We didn't get a valid command or program name
 	mov rsi, not_found_msg

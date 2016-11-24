@@ -5,9 +5,10 @@
 ; NuOS means New OS
 ; =============================================================================
 
-global _start
+[BITS 64]
+;[ORG 0x0000000000100000]
 
-USE64
+global _start
 
 section .kernel
 
@@ -148,5 +149,5 @@ ap_process:				; Set the status byte to "Busy" and run the code
 %include "font.asm"
 %include "sysvar.asm"			; Include this last to keep the read/write variables away from the code
 
-; =============================================================================
-; EOF
+;times 16384 - ($ - $$) db 0
+

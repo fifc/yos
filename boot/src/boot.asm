@@ -577,10 +577,10 @@ nextIOAPIC:
 	call os_print_string
 
 ; elf64 loader
-	cmp dword [KERNEL_PL], 0x464c457f ; elf magic number
+	cmp dword [KERNEL_PL], 0x464c457f     ; elf magic number
 	jne non_elf
 	cmp byte [KERNEL_PL+4], 2
-	jne non_elf                ; only support elf64
+	jne non_elf                           ; only support elf64
 
 	mov rdx, [KERNEL_PL+0x20]
 	mov rax, KERNEL_PL

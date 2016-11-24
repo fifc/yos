@@ -6,6 +6,7 @@ mv *.sys ../bin/
 cd ..
 
 cd kernel
+#nasm kernel64.asm -o ../bin/kernel64.sys
 nasm -f elf64 kernel64.asm -o kernel64.o
 ld -T kernel64.ld kernel64.o -z max-page-size=0x1000 -o ../bin/kernel64.sys
 strip ../bin/kernel64.sys
