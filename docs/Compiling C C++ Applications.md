@@ -49,9 +49,9 @@ Run the installer once it has finished downloading.
 Compiling Your Application
 --------------------------
 
-We can start with some very basic code that uses libBareMetal.
+We can start with some very basic code that uses libnuos.
 
-	#include "libBareMetal.h"
+	#include "libnuos.h"
 	
 	int start(void)
 	{
@@ -63,5 +63,5 @@ Note that the program starts in start() instead of main().
 
 And then the compile:
 
-	gcc -m64 -nostdlib -nostartfiles -nodefaultlibs -mno-red-zone -o hello.o hello.c libBareMetal.c -DBAREMETAL -Ttext=0x200000
+	gcc -m64 -nostdlib -nostartfiles -nodefaultlibs -mno-red-zone -o hello.o hello.c libnuos.c -DBAREMETAL -Ttext=0x200000
 	objcopy -O binary hello.o hello.app

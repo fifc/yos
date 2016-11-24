@@ -1,8 +1,8 @@
 ; =============================================================================
-; BareMetal -- a 64-bit OS written in Assembly for x86-64 systems
-; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
+; NuOS -- a 64-bit OS for x86-64 systems
+; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
-; The BareMetal OS kernel. Assemble with NASM
+; NuOS means New OS
 ; =============================================================================
 
 global _start
