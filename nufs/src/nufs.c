@@ -1,6 +1,6 @@
-/* NuOS File System Utility */
-/* Written by Steven Yi */
-/* v1.2.1 (2016 10 30) */
+/* NuOS File System Utility
+ * v0.1.2 (2016 10 30)
+*/
 
 /* Global includes */
 #include <stdio.h>
@@ -10,25 +10,20 @@
 #include <strings.h>
 #include <ctype.h>
 
-/* Typedefs */
-typedef uint8_t u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef uint64_t u64;
-
 /* Global defines */
 struct NuFSEntry
 {
-	char FileName[32];
-	u64 StartingBlock;
-	u64 ReservedBlocks;
-	u64 FileSize;
-	u64 Unused;
+	char name_[32];
+	uint64_t start_;
+	uint64_t maxsize_;
+	uint64_t size_;
+	uint64_t flags_;
 };
 
+#define BLOCK_SIZE (1<<21)
 /* Global constants */
 // Min disk size is 6MiB (three blocks of 2MiB each.)
-const unsigned long long minimumDiskSize = (6 * 1024 * 1024);
+static const unsigned long long minimumDiskSize = (3LL << 21);
 
 /* Global variables */
 FILE *file, *disk;
@@ -225,17 +220,17 @@ int findfile(char *filename, struct NuFSEntry *fileentry, int *entrynumber)
 	for (tint = 0; tint < 64; tint++)
 	{
 		memcpy(pentry, Directory+(tint*64), 64);
-		if (entry.FileName[0] == 0x00)				// End of directory
+		if (entry.name_[0] == 0x00)				// End of directory
 		{
 			tint = 64;
 		}
-		else if (entry.FileName[0] == 0x01)			// Emtpy entry
+		else if (entry.name_[0] == 0x01)			// Emtpy entry
 		{
 			// Ignore
 		}
 		else							// Valid entry
 		{
-			if (strcmp(filename, entry.FileName) == 0)
+			if (strcmp(filename, entry.name_) == 0)
 			{
 				memcpy(fileentry, pentry, 64);
 				*entrynumber = tint;
@@ -257,17 +252,17 @@ void list()
 	for (tint = 0; tint < 64; tint++)				// Max 64 entries
 	{
 		memcpy(pentry, Directory+(tint*64), 64);
-		if (entry.FileName[0] == 0x00)				// End of directory, bail out
+		if (entry.name_[0] == 0x00)				// End of directory, bail out
 		{
 			tint = 64;
 		}
-		else if (entry.FileName[0] == 0x01)			// Emtpy entry
+		else if (entry.name_[0] == 0x01)			// Emtpy entry
 		{
 			// Ignore
 		}
 		else							// Valid entry
 		{
-			printf("%-32s %20lld %20lld\n", entry.FileName, (long long int)entry.FileSize, (long long int)(entry.ReservedBlocks*2));
+			printf("%-32s %20lld %20lld\n", entry.name_, (long long int)entry.size_, (long long int)(entry.maxsize_*2));
 		}
 	}
 }
@@ -605,18 +600,18 @@ int initialize(char *diskname, char *size, char *mbr, char *boot, char *kernel)
 }
 
 
-// helper function for qsort, sorts by StartingBlock field
-static int StartingBlockCmp(const void *pa, const void *pb)
+// helper function for qsort, sorts by start_ field
+static int start_Cmp(const void *pa, const void *pb)
 {
 	struct NuFSEntry *ea = (struct NuFSEntry *)pa;
 	struct NuFSEntry *eb = (struct NuFSEntry *)pb;
 	// empty records go to the end
-	if (ea->FileName[0] == 0x01)
+	if (ea->name_[0] == 0x01)
 		return 1;
-	if (eb->FileName[0] == 0x01)
+	if (eb->name_[0] == 0x01)
 		return -1;
 	// compare non-empty records by their starting blocks number
-	return (ea->StartingBlock - eb->StartingBlock);
+	return (ea->start_ - eb->start_);
 }
 
 void create(char *filename, unsigned long long maxsize)
@@ -646,14 +641,14 @@ void create(char *filename, unsigned long long maxsize)
 		for (tint = 0; tint < 64; tint++)
 		{
 			pEntry = (struct NuFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
-			if (pEntry->FileName[0] == 0x00) // end of directory
+			if (pEntry->name_[0] == 0x00) // end of directory
 			{
 				num_used_entries = tint;
 				if (first_free_entry == -1)
 					first_free_entry = tint; // there were no unused entires before, will use this one
 				break;
 			}
-			else if (pEntry->FileName[0] == 0x01) // unused entry
+			else if (pEntry->name_[0] == 0x01) // unused entry
 			{
 				if (first_free_entry == -1)
 					first_free_entry = tint; // will use it for our new file
@@ -668,7 +663,7 @@ void create(char *filename, unsigned long long maxsize)
 
 		// Find an area with enough free blocks
 		// Sort our copy of the directory by starting block number
-		qsort(dir_copy, num_used_entries, 64, StartingBlockCmp);
+		qsort(dir_copy, num_used_entries, 64, start_Cmp);
 
 		for (tint = 0; tint < num_used_entries + 1; tint++)
 		{
@@ -679,10 +674,10 @@ void create(char *filename, unsigned long long maxsize)
 			unsigned long long this_file_start;
 			pEntry = (struct NuFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
 
-			if (tint == num_used_entries || pEntry->FileName[0] == 0x01)
+			if (tint == num_used_entries || pEntry->name_[0] == 0x01)
 				this_file_start = num_blocks - 1; // index of the last block
 			else
-				this_file_start = pEntry->StartingBlock;
+				this_file_start = pEntry->start_;
 
 			if (this_file_start - prev_file_end >= blocks_requested)
 			{ // fits here
@@ -691,7 +686,7 @@ void create(char *filename, unsigned long long maxsize)
 			}
 
 			if (tint < num_used_entries)
-				prev_file_end = pEntry->StartingBlock + pEntry->ReservedBlocks;
+				prev_file_end = pEntry->start_ + pEntry->maxsize_;
 		}
 
 		if (new_file_start == 0)
@@ -702,17 +697,17 @@ void create(char *filename, unsigned long long maxsize)
 
 		// Add file record to Directory
 		pEntry = (struct NuFSEntry *)(Directory + first_free_entry * 64);
-		pEntry->StartingBlock = new_file_start;
-		pEntry->ReservedBlocks = blocks_requested;
-		pEntry->FileSize = 0;
-		strcpy(pEntry->FileName, filename);
+		pEntry->start_ = new_file_start;
+		pEntry->maxsize_ = blocks_requested;
+		pEntry->size_ = 0;
+		strcpy(pEntry->name_, filename);
 
 		if (first_free_entry == num_used_entries && num_used_entries + 1 < 64)
 		{
 			// here we used the record that was marked with 0x00,
 			// so make sure to mark the next record with 0x00 if it exists
 			pEntry = (struct NuFSEntry *)(Directory + (num_used_entries + 1) * 64);
-			pEntry->FileName[0] = 0x00;
+			pEntry->name_[0] = 0x00;
 		}
 
 		// Flush Directory to disk
@@ -741,15 +736,15 @@ void read(char *filename)
 	}
 	else
 	{
-		if ((tfile = fopen(tempentry.FileName, "wb")) == NULL)
+		if ((tfile = fopen(tempentry.name_, "wb")) == NULL)
 		{
-			printf("Error: Could not open local file '%s'\n", tempentry.FileName);
+			printf("Error: Could not open local file '%s'\n", tempentry.name_);
 		}
 		else
 		{
-			bytestoread = tempentry.FileSize;
-			fseek(disk, tempentry.StartingBlock*2097152, SEEK_SET); // Skip to the starting block in the disk
-			buffer = malloc(2097152);
+			bytestoread = tempentry.size_;
+			fseek(disk, tempentry.start_*BLOCK_SIZE, SEEK_SET); // Skip to the starting block in the disk
+			buffer = malloc(BLOCK_SIZE);
 			if (buffer == NULL)
 			{
 				printf("Error: Unable to allocate enough memory for buffer.\n");
@@ -758,11 +753,11 @@ void read(char *filename)
 			{
 				while (bytestoread != 0)
 				{
-					if (bytestoread >= 2097152)
+					if (bytestoread >= BLOCK_SIZE)
 					{
-						retval = fread(buffer, 2097152, 1, disk);
-						fwrite(buffer, 2097152, 1, tfile);
-						bytestoread -= 2097152;
+						retval = fread(buffer, BLOCK_SIZE, 1, disk);
+						fwrite(buffer, BLOCK_SIZE, 1, tfile);
+						bytestoread -= BLOCK_SIZE;
 					}
 					else
 					{
@@ -781,68 +776,63 @@ void read(char *filename)
 // Write a file to a NuFS volume
 void write(char *filename)
 {
-	struct NuFSEntry tempentry;
 	FILE *tfile;
 	int tint, slot, retval;
+	struct NuFSEntry tempentry;
 	unsigned long long tempfilesize;
 	char *buffer;
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
 		printf("Error: File not found in NuFS. A file entry must first be created.\n");
+		return;
 	}
-	else
+	if ((tfile = fopen(filename, "rb")) == NULL)
 	{
-		if ((tfile = fopen(filename, "rb")) == NULL)
+		printf("Error: Could not open local file '%s'\n", tempentry.name_);
+		return;
+	}
+	// Is there enough room in NuFS?
+	fseek(tfile, 0, SEEK_END);
+	tempfilesize = ftell(tfile);
+	rewind(tfile);
+	if ((tempentry.maxsize_<<21) < tempfilesize)
+	{
+		fclose(tfile);
+		printf("Error: Not enough reserved space in NuFS.\n");
+		return;
+	}
+	fseek(disk, tempentry.start_<<21, SEEK_SET); // Skip to the starting block in the disk
+	buffer = malloc(BLOCK_SIZE);
+	if (buffer == NULL)
+	{
+		fclose(tfile);
+		printf("Error: Unable to allocate enough memory for buffer.\n");
+		return;
+	}
+	while (tempfilesize != 0)
+	{
+		if (tempfilesize >= BLOCK_SIZE)
 		{
-			printf("Error: Could not open local file '%s'\n", tempentry.FileName);
+			retval = fread(buffer, BLOCK_SIZE, 1, tfile);
+			fwrite(buffer, BLOCK_SIZE, 1, disk);
+			tempfilesize -= BLOCK_SIZE;
 		}
 		else
 		{
-			// Is there enough room in NuFS?
-			fseek(tfile, 0, SEEK_END);
-			tempfilesize = ftell(tfile);
-			rewind(tfile);
-			if ((tempentry.ReservedBlocks*2097152) < tempfilesize)
-			{
-				printf("Error: Not enough reserved space in NuFS.\n");
-			}
-			else
-			{
-				fseek(disk, tempentry.StartingBlock*2097152, SEEK_SET); // Skip to the starting block in the disk
-				buffer = malloc(2097152);
-				if (buffer == NULL)
-				{
-					printf("Error: Unable to allocate enough memory for buffer.\n");
-				}
-				else
-				{
-					while (tempfilesize != 0)
-					{
-						if (tempfilesize >= 2097152)
-						{
-							retval = fread(buffer, 2097152, 1, tfile);
-							fwrite(buffer, 2097152, 1, disk);
-							tempfilesize -= 2097152;
-						}
-						else
-						{
-							retval = fread(buffer, tempfilesize, 1, tfile);
-							memset(buffer+(tempfilesize), 0, (2097152-tempfilesize)); // 0 the rest of the buffer
-							fwrite(buffer, 2097152, 1, disk);
-							tempfilesize = 0;
-						}
-					}
-				}
-				// Update directory
-				tempfilesize = ftell(tfile);
-				memcpy(Directory+(slot*64)+48, &tempfilesize, 8);
-				fseek(disk, 4096, SEEK_SET);				// Seek 4KiB in for directory
-				fwrite(Directory, 4096, 1, disk);			// Write new directory to disk
-			}
-			fclose(tfile);
+			retval = fread(buffer, tempfilesize, 1, tfile);
+			memset(buffer+(tempfilesize), 0, (BLOCK_SIZE-tempfilesize)); // 0 the rest of the buffer
+			fwrite(buffer, BLOCK_SIZE, 1, disk);
+			tempfilesize = 0;
 		}
 	}
+
+	// Update directory
+	tempfilesize = ftell(tfile);
+	memcpy(Directory+(slot*64)+48, &tempfilesize, 8);
+	fseek(disk, 4096, SEEK_SET);				// Seek 4KiB in for directory
+	fwrite(Directory, 4096, 1, disk);			// Write new directory to disk
+	fclose(tfile);
 }
 
 
@@ -864,6 +854,3 @@ void delete(char *filename)
 		fwrite(Directory, 4096, 1, disk);			// Write new directory to disk
 	}
 }
-
-
-/* EOF */
