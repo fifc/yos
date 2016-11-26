@@ -92,20 +92,24 @@ vv_exec:
 
 	call os_debug_dump_reg
 
+	mov rsi, vv_run_msg
+	call os_output
 	call vv_dest_addr
 	cmp rax, 0x12345678
 	je vv_success
 	mov rsi, vv_err_msg
-	call [0x0000000000100010]
+	call os_output
 	jmp vv_exit
 	
 vv_success:
 	mov rsi, vv_success_msg
-	call [0x0000000000100010]
+	call os_output
 vv_exit:
 	jmp os_command_line
-vv_err_msg     db 'app err', 13, 0
-vv_success_msg db 'success!', 13, 0
+;vv_run_msg     db 'bin kernel',13,0
+vv_run_msg     db 'elf kernel',13,0
+vv_err_msg     db 'app err',13,0
+vv_success_msg db 'success!',13,0
 
 ;vv_machine_code dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x206f, 0x754e, 0x534f, 0x0d21, 0x0000
 ;vv_machine_code dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
