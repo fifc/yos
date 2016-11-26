@@ -2,7 +2,7 @@
 ; NuOS -- a 64-bit OS for x86-64 systems
 ; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
-; NuOS means New OS
+; NuOS stands for New OS :)
 ; =============================================================================
 
 [BITS 64]

@@ -204,6 +204,8 @@ os_debug_dump_flag_string4:	db ' O:', 0
 
 align 16
 this_is_the_end:	db 'This is the end.'
+			dq 0
+great_border            equ $
 
 ;------------------------------------------------------------------------------
 

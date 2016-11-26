@@ -41,6 +41,10 @@ os_command_line:
 	call os_string_compare
 	jc near dir
 
+	mov rdi, vv_string		; 'DIR' entered?
+	call os_string_compare
+	jc near vv_exec
+
 	mov rdi, ver_string		; 'VER' entered?
 	call os_string_compare
 	jc near print_ver
@@ -74,31 +78,39 @@ os_command_line:
 	; Program found, load and execute
 	call os_file_read
 	call os_file_close
-	;call programlocation		; Call the program just loaded
-	mov rsi, hello_app
-	mov rdi, 0x0000000000200000 
-	mov rcx, 64
+	call programlocation		; Call the program just loaded
+	jmp os_command_line		; Jump back to the CLI on program completion
+
+;vv_dest_aedr  equ    0x0000000000200000
+vv_dest_addr  equ    0x0000000000800000
+;vv_dest_addr  equ   great_border
+vv_exec:
+	mov rsi, vv_machine_code
+	mov rdi, vv_dest_addr
+	mov rcx, 8
 	rep movsq
 
-	call 0x0000000000200000 
-	cmp rax, 0x54321
-	je okgo
-	mov rsi, not_eq_msg
-	call [0x0000000000100010]
-	jmp os_command_line		; Jump back to the CLI on program completion
-	
-okgo:
-	mov rsi, success_msg
-	call [0x0000000000100010]
-	jmp os_command_line
-not_eq_msg db 'Not 0x54321', 13, 0
-success_msg db 'success!', 13, 0
-dbg_buff	times 20 db 0
+	call os_debug_dump_reg
 
-;hello_app dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x206f, 0x754e, 0x534f, 0x0d21, 0x0000
-;hello_app dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
-hello_app dw 0x21b8, 0x0543, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
-times 64 - ($ - hello_app) db 0
+	call vv_dest_addr
+	cmp rax, 0x12345678
+	je vv_success
+	mov rsi, vv_err_msg
+	call [0x0000000000100010]
+	jmp vv_exit
+	
+vv_success:
+	mov rsi, vv_success_msg
+	call [0x0000000000100010]
+vv_exit:
+	jmp os_command_line
+vv_err_msg     db 'app err', 13, 0
+vv_success_msg db 'success!', 13, 0
+
+;vv_machine_code dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x206f, 0x754e, 0x534f, 0x0d21, 0x0000
+;vv_machine_code dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
+vv_machine_code dw 0x78b8,0x3456,0xc312
+times 64 - ($ - vv_machine_code) db 0
 
 fail:					; We didn't get a valid command or program name
 	mov rsi, not_found_msg
@@ -184,10 +196,11 @@ exit:
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
+	vv_string		db 'vv', 0
 	ver_string		db 'ver', 0
 	exit_string		db 'exit', 0
 	help_string		db 'help', 0
-	debug_string		db 'debug', 0
+	debug_string		db 'dbg', 0
 	reboot_string		db 'reboot', 0
 	testzone_string		db 'tstz', 0
 

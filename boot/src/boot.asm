@@ -17,7 +17,7 @@
 ; Max size of the resulting pure64.sys is 32768 bytes (32KiB)
 ; =============================================================================
 
-%DEFINE KERNEL_PL 0x8000+6144
+%DEFINE KERNEL_PAYLOAD 0x8000+6144
 
 USE16
 ORG 0x00008000
@@ -577,23 +577,23 @@ nextIOAPIC:
 	call os_print_string
 
 ; elf64 loader
-	cmp dword [KERNEL_PL], 0x464c457f     ; elf magic number
+	cmp dword [KERNEL_PAYLOAD], 0x464c457f     ; elf magic number
 	jne non_elf
-	cmp byte [KERNEL_PL+4], 2
+	cmp byte [KERNEL_PAYLOAD+4], 2
 	jne non_elf                           ; only support elf64
 
-	mov rdx, [KERNEL_PL+0x20]
-	mov rax, KERNEL_PL
+	mov rdx, [KERNEL_PAYLOAD+0x20]
+	mov rax, KERNEL_PAYLOAD
 	add rax, rdx
         xor rdx, rdx
-        mov dx,  [KERNEL_PL+0x36]
+        mov dx,  [KERNEL_PAYLOAD+0x36]
         xor rcx, rcx
-        mov cx,  [KERNEL_PL+0x38]
+        mov cx,  [KERNEL_PAYLOAD+0x38]
 elf_loop:
         cmp dword [rax], 1
         jne elf_continue
         mov rsi, [rax+8]
-        add rsi, KERNEL_PL
+        add rsi, KERNEL_PAYLOAD
         mov rdi, [rax+0x10]
         mov r8, rcx
         mov rcx, [rax+0x20]
@@ -604,13 +604,13 @@ elf_loop:
 elf_continue:
         add rax, rdx
         loop elf_loop
-	mov rbx, [KERNEL_PL+0x18]
+	mov rbx, [KERNEL_PAYLOAD+0x18]
 	jmp elf_start
 
 non_elf:
 	xor rbx, rbx
 ; Move the trailing binary to its final location
-	mov rsi, KERNEL_PL		; Memory offset to end of pure64.sys
+	mov rsi, KERNEL_PAYLOAD		; Memory offset to end of pure64.sys
 	mov rdi, 0x100000		; Destination address at the 1MiB mark
 	mov rcx, 0x0D00			; For up to 26KiB kernel (26624 / 8)
 	rep movsq			; Copy 8 bytes at a time
