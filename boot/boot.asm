@@ -21,6 +21,44 @@
 
 USE16
 ORG 0x00008000
+
+;;  NASM structure definition for ELF file header
+
+STRUC ELF64_Header
+        .magic:                 resd 1
+        .bits:                  resb 1
+        .direction:             resb 1
+        .version:               resb 1
+        .os_abi:                resb 1
+        .reserved:              resb 8
+        .type:                  resw 1
+        .arch:                  resw 1
+        .ver_ext:               resd 1
+        .text_entry:            resq 1
+        .text_header:           resq 1
+        .section_header:        resq 1
+        .flags:                 resd 1
+        .header_size:           resw 1
+        .text_entry_size:       resw 1
+        .text_entry_count:      resw 1
+        .section_header_size:   resw 1
+        .section_entry_size:    resw 1
+        .section_entry_count:   resw 1
+        .section_name_index:    resw 1
+ENDSTRUC
+
+;;  NASM structure definition for ELF program section header
+STRUC ELF64_Text_Header
+        .segment_type:          resd 1
+        .flags:                 resd 1
+        .text_file_offset:     resq 1
+        .text_mem_offset:       resq 1
+        .reserved:              resq 1
+        .text_seg_file_size:    resq 1
+        .text_seg_mem_size:     resq 1
+        .text_align:            resd 1
+ENDSTRUC
+
 start:
 	cli				; Disable all interrupts
 	xor eax, eax
@@ -577,34 +615,35 @@ nextIOAPIC:
 	call os_print_string
 
 ; elf64 loader
-	cmp dword [KERNEL_PAYLOAD], 0x464c457f     ; elf magic number
+	cmp dword [KERNEL_PAYLOAD+ELF64_Header.magic], 0x464c457f     ; elf magic number
 	jne non_elf
-	cmp byte [KERNEL_PAYLOAD+4], 2
+	cmp byte [KERNEL_PAYLOAD+ELF64_Header.bits], 2
 	jne non_elf                           ; only support elf64
 
-	mov rdx, [KERNEL_PAYLOAD+0x20]
+	mov rdx, [KERNEL_PAYLOAD+ELF64_Header.text_header]
 	mov rax, KERNEL_PAYLOAD
 	add rax, rdx
         xor rdx, rdx
-        mov dx,  [KERNEL_PAYLOAD+0x36]
+        mov dx,  [KERNEL_PAYLOAD+ELF64_Header.text_entry_size]
         xor rcx, rcx
-        mov cx,  [KERNEL_PAYLOAD+0x38]
+        mov cx,  [KERNEL_PAYLOAD+ELF64_Header.text_entry_count]
 elf_loop:
-        cmp dword [rax], 1
+        cmp dword [rax+ELF64_Text_Header.segment_type], 1
         jne elf_continue
-        mov rsi, [rax+8]
+        mov rsi, [rax+ELF64_Text_Header.text_file_offset]
         add rsi, KERNEL_PAYLOAD
-        mov rdi, [rax+0x10]
+        mov rdi, [rax+ELF64_Text_Header.text_mem_offset]
         mov r8, rcx
-        mov rcx, [rax+0x20]
+        mov rcx, [rax+ELF64_Text_Header.text_mem_offset]
 	add rcx, 7
 	shr rcx, 3
+	cld
         rep movsq
         mov rcx, r8
 elf_continue:
         add rax, rdx
         loop elf_loop
-	mov rbx, [KERNEL_PAYLOAD+0x18]
+	mov rbx, [KERNEL_PAYLOAD+ELF64_Header.text_entry]
 	jmp elf_start
 
 non_elf:
