@@ -11,6 +11,37 @@ align 16
 
 
 ; -----------------------------------------------------------------------------
+; os_dump_sys_reg -- Dump the values on the sys registers to the screen
+;  IN:	Nothing
+; OUT:	Nothing, all registers preserved
+os_dump_sys_reg:
+	push rax		; Push the registers used by this function
+	mov rsi, odsr_gdtr_msg
+	call os_output
+	sgdt [odsr_sysreg_save]
+	mov rax,  [odsr_sysreg_save]
+	call os_debug_dump_rax
+	mov al, '+'
+	call os_output_char
+	mov ax,  [odsr_sysreg_save+8]
+	call os_debug_dump_ax
+
+	mov rsi, osdr_ldtr_msg
+	call os_output
+	sldt rax
+	call os_debug_dump_rax
+	call os_print_newline
+	
+os_dump_sys_reg_done:
+	pop rax
+	ret
+odsr_sysreg_save dq 0
+		 dw 0
+odsr_gdtr_msg    db '  GDTR: ',0
+osdr_ldtr_msg    db '    LDTR: ',0
+; -----------------------------------------------------------------------------
+
+; -----------------------------------------------------------------------------
 ; os_debug_dump_reg -- Dump the values on the registers to the screen (For debug purposes)
 ;  IN:	Nothing
 ; OUT:	Nothing, all registers preserved
