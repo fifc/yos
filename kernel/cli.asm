@@ -88,6 +88,7 @@ vv_exec:
 	mov rsi, vv_machine_code
 	mov rdi, vv_dest_addr
 	mov rcx, 8
+	cld
 	rep movsq
 
 	mov rsi, vv_run_msg

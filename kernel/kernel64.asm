@@ -13,7 +13,7 @@ global _start
 section .kernel
 
 _start:
-	jmp nuos_run			; Skip over the function call index
+	jmp nuos_run			; Skip over the function table
 	nop
 
 	align 16
