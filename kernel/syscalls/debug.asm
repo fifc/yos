@@ -42,15 +42,120 @@ os_dump_sys_reg:
 	call os_debug_dump_ax
 
 	call os_print_newline
-
+	call os_dump_cr_reg
 os_dump_sys_reg_done:
 	pop rax
 	ret
 odsr_sysreg_save dq 0
 		 dw 0
-odsr_gdtr_msg    db '  GDTR: ',0
+odsr_cr_msg      db ' Cx:',0
+odsr_gdtr_msg    db ' GDTR: ',0
 odsr_ldtr_msg    db ' LDTR: ',0
 odsr_idtr_msg    db ' IDTR: ',0
+
+os_dump_cr_reg0:
+	mov rax, cr0
+	mov rbx, os_dump_cr_reg1
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg1:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg2
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg2:
+	mov rax, cr2
+	mov rbx, os_dump_cr_reg3
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg3:
+	mov rax, cr3
+	mov rbx, os_dump_cr_reg4
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg4:
+	mov rax, cr4
+	mov rbx, os_dump_cr_reg5
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg5:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg6
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg6:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg7
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg7:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg8
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg8:
+	mov rax, cr8
+	mov rbx, os_dump_cr_reg9
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg9:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg10
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg10:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg11
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg11:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg12
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg12:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg13
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg13:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg14
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg14:
+	or ecx, 0x80000000
+	mov rbx, os_dump_cr_reg15
+	jmp near os_dump_cr_reg_print
+os_dump_cr_reg15:
+	or ecx, 0x80000000
+	mov rbx, 0
+	jmp near os_dump_cr_reg_print
+
+os_dump_cr_reg_step equ os_dump_cr_reg1 - os_dump_cr_reg0
+os_dump_cr_reg:
+	push rax
+	push rbx
+	push rcx
+	push rdx
+	mov dx,  '0'
+	mov ecx,  0
+	mov rbx, os_dump_cr_reg0
+os_dump_cr_loop:
+	jmp rbx
+os_dump_cr_reg_print:
+	test ecx, ecx
+	js near os_dump_cr_reg_na
+	cmp dx, '9' + 1
+	jne os_dump_cr_go
+	mov dx, 'a'
+os_dump_cr_go:
+	mov byte [odsr_cr_msg+2], dl
+	mov rsi, odsr_cr_msg
+	call os_output
+	call os_debug_dump_rax
+os_dump_cr_reg_na:
+	cmp rbx, 0
+	je os_dump_cr_reg_exit
+	and ecx, 0x7fffffff
+	inc cx
+	inc dx
+	jmp near os_dump_cr_loop
+	
+os_dump_cr_reg_exit:
+	call os_print_newline
+	pop rdx
+	pop rcx
+	pop rbx
+	pop rax
+	ret
+
 ; -----------------------------------------------------------------------------
 
 ; -----------------------------------------------------------------------------
