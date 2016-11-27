@@ -685,7 +685,22 @@ elf_start:
 
 	cmp rbx, 0
 	je non_elf_start
+	cmp rbx, 0x100000
+	je call_elf_entry
+	mov ax, 0x0006
+	call os_move_cursor
+	mov rsi, msg_elf_entry_err
+	call os_print_string
+	hlt
+call_elf_entry:
+	call simuapp_run
 	jmp rbx
+simuapp_run:
+        mov rax, 0x0000c300001234b8 ; machine code for:  mov rax 0x1234 + ret
+        mov rdi, 0x0000000000200000
+        stosq
+        call 0x0000000000200000
+        ret
 
 non_elf_start:
 

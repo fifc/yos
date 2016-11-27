@@ -1,6 +1,6 @@
 ; =============================================================================
-; Pure64 -- a 64-bit OS loader written in Assembly for x86-64 systems
-; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
+; NuBoot -- a 64-bit OS loader written in Assembly for x86-64 systems
+; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
 ; Interrupts
 ; =============================================================================
@@ -212,7 +212,7 @@ exception_gate_main_hang:
 	jmp exception_gate_main_hang	; Hang. User must reset machine at this point
 
 ; Strings for the error messages
-int_string db 'Pure64 - Exception ', 0
+int_string db 'NuBoot - Exception ', 0
 adr_string db ' @ 0x', 0
 exc_string db '?? - Unknown', 0
 align 16

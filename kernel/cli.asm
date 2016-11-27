@@ -81,23 +81,13 @@ os_command_line:
 	call programlocation		; Call the program just loaded
 	jmp os_command_line		; Jump back to the CLI on program completion
 
-;vv_dest_aedr  equ    0x0000000000200000
-vv_dest_addr  equ    0x0000000000800000
-;vv_dest_addr  equ   great_border
 vv_exec:
-	mov rsi, vv_machine_code
-	mov rdi, vv_dest_addr
-	mov rcx, 8
-	cld
-	rep movsq
-
-	mov rsi, vv_run_msg
-	call os_output
 	call os_dump_sys_reg
 	call os_debug_dump_reg
 
-	call vv_dest_addr
-	cmp rax, 0x12345678
+	call simuapp_run
+
+	cmp rax, 0x1234
 	je vv_success
 	mov rsi, vv_err_msg
 	call os_output
@@ -108,15 +98,9 @@ vv_success:
 	call os_output
 vv_exit:
 	jmp os_command_line
-;vv_run_msg     db 'bin kernel',13,0
-vv_run_msg     db 'kernel: elf',13,0
+
 vv_err_msg     db 'error!',13,0
 vv_success_msg db 'success!',13,0
-
-;vv_machine_code dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x206f, 0x754e, 0x534f, 0x0d21, 0x0000
-;vv_machine_code dw 0xbe48, 0x0012, 0x0020, 0x0000, 0x0000, 0x14ff, 0x1025, 0x1000, 0xc300, 0x6548, 0x6c6c, 0x216f, 0x000d
-vv_machine_code dw 0x78b8,0x3456,0xc312
-times 64 - ($ - vv_machine_code) db 0
 
 fail:					; We didn't get a valid command or program name
 	mov rsi, not_found_msg
