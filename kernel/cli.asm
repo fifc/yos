@@ -82,10 +82,12 @@ os_command_line:
 	jmp os_command_line		; Jump back to the CLI on program completion
 
 vv_exec:
-	call os_dump_sys_reg
-	call os_debug_dump_reg
+	;call os_dump_sys_reg
+	;call os_debug_dump_reg
 
-	call simuapp_run
+	mov rax, 0x7788
+	call simuapp_start
+	jmp os_command_line
 
 	cmp rax, 0x1234
 	je vv_success
@@ -186,13 +188,13 @@ exit:
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
-	vv_string		db 'vv', 0
+	vv_string		db 'v', 0
 	ver_string		db 'ver', 0
 	exit_string		db 'exit', 0
 	help_string		db 'help', 0
 	debug_string		db 'dbg', 0
 	reboot_string		db 'reboot', 0
-	testzone_string		db 'tstz', 0
+	testzone_string		db 'tz', 0
 
 	appextension:		db '.app', 0
 	prompt:			db 'nuos # ', 0

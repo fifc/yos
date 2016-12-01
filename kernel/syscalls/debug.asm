@@ -19,11 +19,11 @@ os_dump_sys_reg:
 	mov rsi, odsr_gdtr_msg
 	call os_output
 	sgdt [odsr_sysreg_save]
-	mov rax,  [odsr_sysreg_save]
+	mov rax,  [odsr_sysreg_save+2]
 	call os_debug_dump_rax
-	mov al, '+'
+	mov al, ':'
 	call os_output_char
-	mov ax,  [odsr_sysreg_save+8]
+	mov ax,  [odsr_sysreg_save]
 	call os_debug_dump_ax
 
 	mov rsi, odsr_ldtr_msg
@@ -34,11 +34,11 @@ os_dump_sys_reg:
 	mov rsi, odsr_idtr_msg
 	call os_output
 	sidt [odsr_sysreg_save]
-	mov rax,  [odsr_sysreg_save]
+	mov rax,  [odsr_sysreg_save+2]
 	call os_debug_dump_rax
-	mov al, '+'
+	mov al, ':'
 	call os_output_char
-	mov ax,  [odsr_sysreg_save+8]
+	mov ax,  [odsr_sysreg_save]
 	call os_debug_dump_ax
 
 	call os_print_newline

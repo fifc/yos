@@ -43,15 +43,17 @@ _start:
         dq os_set_proc_start_time       ; 0x00C8
 	align 16
 
-simuapp_run:
+simuapp_start equ 0x0000000000200000
+simuapp_setup:
         mov rax, 0x0000c300001234b8 ; machine code for:  mov rax 0x1234 + ret
-        mov rdi, 0x0000000000200000
+        mov rdi, simuapp_start
         stosq
-        call 0x0000000000200000
+        xor eax, eax                ; this also set all rax to 0
+        stosq
 	ret
 
 nuos_run:
-	;call simuapp_run
+	call simuapp_setup
 	call init_64			; After this point we are in a working 64-bit environment
 	call init_pci			; Initialize the PCI bus
 	call init_hdd			; Initialize the disk
