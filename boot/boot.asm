@@ -22,43 +22,6 @@
 USE16
 ORG 0x00008000
 
-;;  NASM structure definition for ELF file header
-
-STRUC ELF64_Header
-        .magic:                 resd 1
-        .bits:                  resb 1
-        .direction:             resb 1
-        .version:               resb 1
-        .os_abi:                resb 1
-        .reserved:              resb 8
-        .type:                  resw 1
-        .arch:                  resw 1
-        .ver_ext:               resd 1
-        .text_entry:            resq 1
-        .text_header:           resq 1
-        .section_header:        resq 1
-        .flags:                 resd 1
-        .header_size:           resw 1
-        .text_entry_size:       resw 1
-        .text_entry_count:      resw 1
-        .section_header_size:   resw 1
-        .section_entry_size:    resw 1
-        .section_entry_count:   resw 1
-        .section_name_index:    resw 1
-ENDSTRUC
-
-;;  NASM structure definition for ELF program section header
-STRUC ELF64_Text_Header
-        .segment_type:          resd 1
-        .flags:                 resd 1
-        .text_file_offset:     resq 1
-        .text_mem_offset:       resq 1
-        .reserved:              resq 1
-        .text_seg_file_size:    resq 1
-        .text_seg_mem_size:     resq 1
-        .text_align:            resd 1
-ENDSTRUC
-
 start:
 	cli				; Disable all interrupts
 	xor eax, eax
@@ -748,6 +711,43 @@ normal_start:
 ; Pad to an even KB file (6 KiB)
 times 6144-($-$$) db 0x90
 
+
+;;  NASM structure definition for ELF file header
+
+STRUC ELF64_Header
+        .magic:                 resd 1
+        .bits:                  resb 1
+        .direction:             resb 1
+        .version:               resb 1
+        .os_abi:                resb 1
+        .reserved:              resb 8
+        .type:                  resw 1
+        .arch:                  resw 1
+        .ver_ext:               resd 1
+        .text_entry:            resq 1
+        .text_header:           resq 1
+        .section_header:        resq 1
+        .flags:                 resd 1
+        .header_size:           resw 1
+        .text_entry_size:       resw 1
+        .text_entry_count:      resw 1
+        .section_header_size:   resw 1
+        .section_entry_size:    resw 1
+        .section_entry_count:   resw 1
+        .section_name_index:    resw 1
+ENDSTRUC
+
+;;  NASM structure definition for ELF program section header
+STRUC ELF64_Text_Header
+        .segment_type:          resd 1
+        .flags:                 resd 1
+        .text_file_offset:     resq 1
+        .text_mem_offset:       resq 1
+        .reserved:              resq 1
+        .text_seg_file_size:    resq 1
+        .text_seg_mem_size:     resq 1
+        .text_align:            resd 1
+ENDSTRUC
 
 ; =============================================================================
 ; EOF
