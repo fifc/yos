@@ -1,6 +1,6 @@
-# NuBoot - v0.6.1 Manual
+# NuBoot - v0.1.5 Manual
 
-NuBoot must be loaded to the 16-bit memory address `0x0000:0x8000`
+NuBoot must be loaded to the 16-bit memory address `0x00008000`
 
 NuBoot expects that the up to 26KiB of data after it is the software that will be loaded to address `0x0000000000100000`.
 
