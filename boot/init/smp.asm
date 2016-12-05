@@ -1,12 +1,13 @@
 ; =============================================================================
-; Pure64 -- a 64-bit OS loader written in Assembly for x86-64 systems
-; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
+; NuBoot -- a 64-bit OS loader written in Assembly for x86-64 systems
+; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
 ; INIT SMP
 ; =============================================================================
 
 
 init_smp:
+	mov word [cpu_activated], 0
 	mov al, '5'			; Start of MP init
 	mov [0x000B809C], al
 	mov al, '0'
@@ -20,15 +21,14 @@ init_smp:
 	xor eax, eax
 	xor edx, edx
 	mov rsi, [os_LocalAPICAddress]
-	add rsi, 0x20			; Add the offset for the APIC ID location
-	lodsd				; APIC ID is stored in bits 31:24
-	shr rax, 24			; AL now holds the BSP CPU's APIC ID
+	mov eax, [rsi+0x20]		; Add the offset for the APIC ID location
+	shr rax, 24			; APIC ID is stored in bits 31:24
 	mov dl, al			; Store BSP APIC ID in DL
 
 	mov al, '8'			; Start the AP's
 	mov [0x000B809E], al
 
-	mov rsi, 0x0000000000005100
+	mov esi, 0x00005100
 	xor eax, eax
 	xor ecx, ecx
 	mov cx, [cpu_detected]
@@ -64,7 +64,7 @@ wait1:
 	cmp rax, rbx
 	jg wait1
 
-	mov rsi, 0x0000000000005100
+	mov esi, 0x00005100
 	xor ecx, ecx
 	mov cx, [cpu_detected]
 smp_send_SIPI:

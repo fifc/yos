@@ -1,20 +1,19 @@
 ; =============================================================================
 ; NuBoot -- a 64-bit OS loader written in Assembly for x86-64 systems
 ; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
-; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
 ;
-; Loaded from the first stage. Gather information about the system while
-; in 16-bit mode (BIOS is still accessible), setup a minimal 64-bit
-; environment, copy the 64-bit kernel from the end of the Pure64 binary to
-; the 1MiB memory mark and jump to it!
+; The first stage loader is required to gather information about the system
+; while the BIOS or UEFI is still available and load the NuBoot binary to
+; 0x00008000. Setup a minimal 64-bit environment, copy the 64-bit kernel from
+; the end of the NuBoot binary to the 1MiB memory mark and jump to it!
 ;
-; Pure64 requires a payload for execution! The stand-alone pure64.sys file
+; NuBoot requires a payload for execution! The stand-alone pure64.sys file
 ; is not sufficient. You must append your kernel or software to the end of
 ; the Pure64 binary. The maximum size of the kernel or software is 26KiB.
 ;
-; Windows - copy /b pure64.sys + kernel64.sys
-; Unix - cat pure64.sys kernel64.sys > pure64.sys
-; Max size of the resulting pure64.sys is 32768 bytes (32KiB)
+; Windows - copy /b boot.sys + kernel64.sys
+; Unix - cat nuboot.sys kernel64.sys > boot.sys
+; Max size of the resulting boot.sys is 32768 bytes (32KiB)
 ; =============================================================================
 
 %DEFINE KERNEL_PAYLOAD 0x8000+6144
@@ -54,7 +53,7 @@ align 16
 USE32
 
 start32:
-	mov eax, 16
+	mov eax, 16			; Set the correct segment registers
 	mov ds, ax
 	mov es, ax
 	mov ss, ax
@@ -66,7 +65,7 @@ start32:
 	mov cx, 2000
 	rep stosw
 
-	xor eax, eax
+	xor eax, eax			; Clear all registers
 	xor ebx, ebx
 	xor ecx, ecx
 	xor edx, edx
@@ -252,6 +251,7 @@ pd_again:				; Create a 2 MiB page
 
 	jmp SYS64_CODE_SEL:start64	; Jump to 64-bit mode
 
+
 align 16
 
 ; =============================================================================
@@ -269,14 +269,14 @@ start64:
 	mov ah, 22
 	call os_move_cursor
 
-	xor rax, rax			; aka r0
-	xor rbx, rbx			; aka r3
-	xor rcx, rcx			; aka r1
-	xor rdx, rdx			; aka r2
-	xor rsi, rsi			; aka r6
-	xor rdi, rdi			; aka r7
-	xor rbp, rbp			; aka r5
-	mov rsp, 0x8000			; aka r4
+	xor eax, eax			; aka r0
+	xor ebx, ebx			; aka r3
+	xor ecx, ecx			; aka r1
+	xor edx, edx			; aka r2
+	xor esi, esi			; aka r6
+	xor edi, edi			; aka r7
+	xor ebp, ebp			; aka r5
+	mov esp, 0x8000			; aka r4
 	xor r8, r8
 	xor r9, r9
 	xor r10, r10
