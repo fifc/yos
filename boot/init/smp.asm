@@ -7,7 +7,6 @@
 
 
 init_smp:
-	mov word [cpu_activated], 0
 	mov al, '5'			; Start of MP init
 	mov [0x000B809C], al
 	mov al, '0'
