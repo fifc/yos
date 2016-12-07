@@ -1,4 +1,4 @@
-;Multiboot for NuOS/NuBoot
+;Multiboot for NuBoot
 
 ; http://stackoverflow.com/questions/33488194/creating-a-simple-multiboot-kernel-loaded-with-grub2
 ; https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#OS-image-format
