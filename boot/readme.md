@@ -9,7 +9,7 @@ Steven Yi (haswell@wo.cn)
 
 ## Building
 
-The only requirement for building NuBoot is [NASM](http://www.nasm.us/) (The Netwide Assembler). In Linux you can probably download it from the distro's repository. If you are using Windows or Mac OS X you can grab pre-compiled binaries [here](http://www.nasm.us/pub/nasm/releasebuilds/2.10.07/) in the `macosx` and `win32` directories, respectively.
+The only requirement for building NuBoot is [NASM](http://www.nasm.us/) (The Netwide Assembler). In Linux you can probably download it from the distro's repository. If you are using Windows or Mac OS X you can grab pre-compiled binaries [here](http://www.nasm.us/pub/nasm/releasebuilds/2.12.02/) in the `macosx` and `win32` directories, respectively.
 
 Build scripts are included for Unix/Linux and Windows systems.
 
@@ -19,6 +19,6 @@ Windows: `build.bat`
 
 ## Notes
 
-Building NuBoot from source requires NASM v2.10 or higher; the version included in the OS X 10.10 Developer Tools is not recent enough. - *Seriously, Apple? NASM v0.98 is from 2007!!*
+Building NuBoot from source requires NASM v2.10 or higher; the version included in the OS X 10.12 Developer Tools is not recent enough. - *Seriously, Apple? NASM v0.98 is from 2007!!*
 
 If you use [MacPorts](http://www.macports.org), you can install NASM v2.10+ by executing: `sudo port install nasm`
