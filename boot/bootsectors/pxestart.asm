@@ -2,7 +2,7 @@
 ; NuBoot PXE Start -- a 64-bit OS loader written in Assembly for x86-64 systems
 ; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
-; This is a stub file for loading Pure64 and a kernel via PXE.
+; This is a stub file for loading NuBoot and a kernel via PXE.
 ;
 ; Windows - copy /b pxestart.bin + pure64.sys + kernel64.sys pxeboot.bin
 ; Unix - cat pxestart.bin pure64.sys kernel64.sys > pxeboot.bin
@@ -103,9 +103,8 @@ check_A20:
 	mov si, msg_Load		; Print message
 	call print_string_16
 
-	jmp 0x0000:0x8000
 	mov eax, [0x8000]
-	cmp eax, 0x00018BE9		; Match against the Pure64 binary
+	cmp eax, 0x00018BE9		; Match against the NuBoot binary
 	jne magic_fail
 
 ; At this point we are done with real mode and BIOS interrupts. Jump to 32-bit mode.
@@ -162,4 +161,4 @@ times 510-$+$$ db 0			; Pad out for a normal boot sector
 
 sign dw 0xAA55				; BIOS boot sector signature
 
-times 1024-$+$$ db 0			; Padding so that Pure64 will be aligned at 0x8000
+times 1024-$+$$ db 0			; Padding so that NuBoot will be aligned at 0x8000
