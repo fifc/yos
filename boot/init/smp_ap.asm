@@ -1,5 +1,5 @@
 ; =============================================================================
-; Pure64 -- a 64-bit OS loader written in Assembly for x86-64 systems
+; NuBoot -- a 64-bit OS loader written in Assembly for x86-64 systems
 ; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
 ;
 ; INIT SMP AP
@@ -129,7 +129,7 @@ clearcs64_ap:
 	shr rax, 24			; Shift to the right and AL now holds the CPU's APIC ID
 	shl rax, 10			; shift left 10 bits for a 1024byte stack
 	add rax, 0x0000000000050400	; stacks decrement when you "push", start at 1024 bytes in
-	mov rsp, rax			; Pure64 leaves 0x50000-0x9FFFF free so we use that
+	mov rsp, rax			; NuBoot leaves 0x50000-0x9FFFF free so we use that
 
 	lgdt [GDTR64]			; Load the GDT
 	lidt [IDTR64]			; load IDT register

@@ -9,17 +9,18 @@
 ;
 ; NuBoot requires a payload for execution! The stand-alone pure64.sys file
 ; is not sufficient. You must append your kernel or software to the end of
-; the Pure64 binary. The maximum size of the kernel or software is 26KiB.
+; the NuBoot binary. The maximum size of the kernel or software is 26KiB.
 ;
 ; Windows - copy /b boot.sys + kernel64.sys
 ; Unix - cat nuboot.sys kernel64.sys > boot.sys
 ; Max size of the resulting boot.sys is 32768 bytes (32KiB)
 ; =============================================================================
 
-%DEFINE KERNEL_PAYLOAD 0x8000+6144
-
 USE32
 ORG 0x00008000
+
+NUBOOT_SIZE     equ 6144                ; Pad NuBoot to this length
+KERNEL_PAYLOAD equ 0x8000+NUBOOT_SIZE
 
 start:
 	jmp start32			; This command will be overwritten with 'NOP's before the AP's are started
@@ -309,7 +310,7 @@ clearcs64:
 	mov al, '2'
 	mov [0x000B809E], al
 
-; Patch Pure64 AP code			; The AP's will be told to start execution at 0x8000
+; Patch NuBoot AP code			; The AP's will be told to start execution at 0x8000
 	mov edi, start			; We need to remove the BSP Jump call to get the AP's
 	mov eax, 0x90909090		; to fall through to the AP Init code
 	stosd
@@ -444,7 +445,7 @@ clearmapnext:
 	shr rax, 24			; Shift to the right and AL now holds the CPU's APIC ID
 	shl rax, 10			; shift left 10 bits for a 1024byte stack
 	add rax, 0x0000000000050400	; stacks decrement when you "push", start at 1024 bytes in
-	mov rsp, rax			; Pure64 leaves 0x50000-0x9FFFF free so we use that
+	mov rsp, rax			; NuBoot leaves 0x50000-0x9FFFF free so we use that
 
 ; Debug
 	mov al, '6'			; SMP Init complete
@@ -610,7 +611,7 @@ non_elf:
 ; Move the trailing binary to its final location
 	mov rsi, KERNEL_PAYLOAD		; Memory offset to end of pure64.sys
 	mov rdi, 0x100000		; Destination address at the 1MiB mark
-	mov rcx, 0x0D00			; For up to 26KiB kernel (26624 / 8)
+	mov rcx, ((32768 - NUBOOT_SIZE) / 8)
 	rep movsq			; Copy 8 bytes at a time
 
 elf_start:
@@ -707,7 +708,7 @@ normal_start:
 %include "sysvar.asm"
 
 ; Pad to an even KB file (6 KiB)
-times 6144-($-$$) db 0x90
+times NUBOOT_SIZE-($-$$) db 0x90
 
 
 ;;  NASM structure definition for ELF file header
