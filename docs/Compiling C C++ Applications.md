@@ -65,3 +65,9 @@ And then the compile:
 
 	gcc -m64 -nostdlib -nostartfiles -nodefaultlibs -mno-red-zone -o hello.o hello.c libnuos.c -DBAREMETAL -Ttext=0x200000
 	objcopy -O binary hello.o hello.app
+
+C/C++ will add some cruft to your object files that you may want to remove
+
+	objcopy --remove-section .comment FILE.o
+	objcopy --remove-section .eh_frame FILE.o
+
