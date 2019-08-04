@@ -158,15 +158,15 @@ rtc_poll:
 	add dx, 2
 	out dx, al
 
-; Clear out the first 4096 bytes of memory. This will store the 64-bit IDT, GDT, PML4, and PDP
-	mov ecx, 1024
+; Clear out the first 16KiB of memory. This will store the 64-bit IDT, GDT, PML4, PDP Low, and PDP High
+	mov ecx, 4096
 	xor eax, eax
-	mov edi, eax
+	xor edi, edi
 	rep stosd
 
-; Clear memory for the Page Descriptor Entries (0x10000 - 0x4FFFF)
+; Clear memory for the Page Descriptor Entries (0x10000 - 0x5FFFF)
 	mov edi, 0x00010000
-	mov ecx, 65536
+	mov ecx, 81920
 	rep stosd
 
 ; Copy the GDT to its final location in memory
@@ -187,7 +187,7 @@ rtc_poll:
 	stosd
 
 	mov edi, 0x00002800		; Create a PML4 entry for higher half (starting at 0xFFFF800000000000)
-	mov eax, 0x00003007		; The higher half is identity mapped to the lower half
+	mov eax, 0x00004007		; The higher half is identity mapped to the lower half
 	stosd
 	xor eax, eax
 	stosd
