@@ -1,10 +1,10 @@
-Building C/C++ Applications for NuOS
+Building C/C++ Applications for YOS
 ============================================
 
 Introduction
 ------------
 
-Linux is the default development environment for NuOS apps since most distributions come with all of the required tools for compiling your code. This document contains the instructions necessary for compiling C/C++ applications for NuOS under Linux, Mac OS X, and Windows.
+Linux is the default development environment for YOS apps since most distributions come with all of the required tools for compiling your code. This document contains the instructions necessary for compiling C/C++ applications for YOS under Linux, Mac OS X, and Windows.
 
 Installing the compiler in Linux
 --------------------------------
@@ -49,9 +49,9 @@ Run the installer once it has finished downloading.
 Compiling Your Application
 --------------------------
 
-We can start with some very basic code that uses libnuos.
+We can start with some very basic code that uses libyos.
 
-	#include "libnuos.h"
+	#include "libyos.h"
 	
 	int start(void)
 	{
@@ -63,7 +63,7 @@ Note that the program starts in start() instead of main().
 
 And then the compile:
 
-	gcc -m64 -nostdlib -nostartfiles -nodefaultlibs -mno-red-zone -o hello.o hello.c libnuos.c -DBAREMETAL -Ttext=0x200000
+	gcc -m64 -nostdlib -nostartfiles -nodefaultlibs -mno-red-zone -o hello.o hello.c libyos.c -DBAREMETAL -Ttext=0x200000
 	objcopy -O binary hello.o hello.app
 
 C/C++ will add some cruft to your object files that you may want to remove

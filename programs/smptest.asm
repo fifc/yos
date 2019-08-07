@@ -4,7 +4,7 @@
 ;
 ; Demo the ability to spawn multiple workloads for CPU cores to work on
 ;
-; NuOS compile:
+; YOS compile:
 ; nasm smptest.asm -o smptest.app
 ; -----------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@
 [BITS 64]
 [ORG 0x0000000000200000]
 
-%INCLUDE "nuos.asm"
+%INCLUDE "yos.asm"
 
 start:				; Start of program label
 

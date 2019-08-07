@@ -1,2 +1,2 @@
-SUBDIRS = nufs
+SUBDIRS = yfs
 EXTRA_DIST = doc

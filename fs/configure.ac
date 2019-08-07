@@ -1,7 +1,7 @@
 AC_PREREQ([2.69])
 AC_INIT([NuFS], [1.2], [51318027@qq.com])
 AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_SRCDIR([nufs/nufs.c])
+AC_CONFIG_SRCDIR([yfs/yfs.c])
 AC_CONFIG_HEADERS([config.h])
 
 AC_PROG_CC_C99
@@ -14,5 +14,5 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([memset strcasecmp])
 
 AC_CONFIG_FILES([Makefile
-                 nufs/Makefile])
+                 yfs/Makefile])
 AC_OUTPUT

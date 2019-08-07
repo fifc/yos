@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd bin
-qemu-img convert -O vmdk nuos.image nuos.vmdk
+qemu-img convert -O vmdk yos.img yos.vmdk

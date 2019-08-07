@@ -3,12 +3,12 @@
 //
 // This program checks all odd numbers between 3 and 'maxn' and determines if they are prime.
 // On exit the program will display the execution time and how many prime numbers were found.
-// Useful for testing runtime performance between Linux/BSD and NuOS.
+// Useful for testing runtime performance between Linux/BSD and g.
 //
-// NuOS compile using GCC (Tested with 4.8) with Newlib 2.1.0
-// gcc -I newlib-2.1.0/newlib/libc/include/ -c primesmp.c -o primesmp.o -DNUOS
-// gcc -c -nostdlib -nostartfiles -nodefaultlibs libnuos.c -o libnuos.o
-// ld -T app.ld -o primesmp.app crt0.o primesmp.o libnuos.o libc.a
+// g compile using GCC (Tested with 4.8) with Newlib 2.1.0
+// gcc -I newlib-2.1.0/newlib/libc/include/ -c primesmp.c -o primesmp.o -DYOS
+// gcc -c -nostdlib -nostartfiles -nodefaultlibs libyos.c -o libyos.o
+// ld -T app.ld -o primesmp.app crt0.o primesmp.o libyos.o libc.a
 //
 // Linux/BSD compile using GCC (Tested with 4.8)
 // gcc -pthread primesmp.c -o primesmp
@@ -23,8 +23,8 @@
 #include <string.h>
 #include <time.h>
 
-#ifdef NUOS
-#include "libnuos.h"
+#ifdef YOS
+#include "libyos.h"
 #else
 #include <pthread.h>
 #endif

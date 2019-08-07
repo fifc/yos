@@ -13,8 +13,8 @@ align 16
 hextable: 		db '0123456789ABCDEF'
 
 ; Strings
-system_status_header:	db 'NuOS v0.1.1', 0
-readymsg:		db 'NuOS is ready', 0
+system_status_header:	db 'YOS v0.1.1', 0
+readymsg:		db 'YOS is ready', 0
 cpumsg:			db '[cpu: ', 0
 memmsg:			db ']  [mem: ', 0
 networkmsg:		db ']  [net: ', 0

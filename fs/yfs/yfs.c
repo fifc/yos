@@ -1,4 +1,4 @@
-/* NuOS File System Utility
+/* YOS File System Utility
  * v0.1.2 (2016 10 30)
 */
 
@@ -11,7 +11,7 @@
 #include <ctype.h>
 
 /* Global defines */
-struct NuFSEntry
+struct YFSEntry
 {
 	char name_[32];
 	uint64_t start_;
@@ -30,7 +30,7 @@ FILE *file, *disk;
 unsigned int filesize, disksize, retval;
 char tempfilename[32], tempstring[32];
 char *filename, *diskname, *command;
-char fs_tag[] = "NuFS";
+char fs_tag[] = "YFS";
 char s_list[] = "list";
 char s_format[] = "format";
 char s_initialize[] = "initialize";
@@ -39,7 +39,7 @@ char s_read[] = "read";
 char s_write[] = "write";
 char s_delete[] = "delete";
 char s_version[] = "version";
-struct NuFSEntry entry;
+struct YFSEntry entry;
 void *pentry = &entry;
 char *BlockMap;
 char *FileBlocks;
@@ -47,7 +47,7 @@ char Directory[4096];
 char DiskInfo[512];
 
 /* Built-in functions */
-int findfile(char *filename, struct NuFSEntry *fileentry, int *entrynumber);
+int findfile(char *filename, struct YFSEntry *fileentry, int *entrynumber);
 void list();
 void format();
 int initialize(char *diskname, char *size, char *mbr, char *boot, char *kernel);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 		{
 			if (strcasecmp(s_version, argv[1]) == 0)
 			{
-				printf("NuOS File System Utility v1.2.1 (2016 10 31)\n");
+				printf("YOS File System Utility v1.2.1 (2016 10 31)\n");
 				printf("Written by Steven Yi (51318027@qq.com)\n");
 			}
 		}
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 }
 
 
-int findfile(char *filename, struct NuFSEntry *fileentry, int *entrynumber)
+int findfile(char *filename, struct YFSEntry *fileentry, int *entrynumber)
 {
 	int tint;
 
@@ -603,8 +603,8 @@ int initialize(char *diskname, char *size, char *mbr, char *boot, char *kernel)
 // helper function for qsort, sorts by start_ field
 static int start_Cmp(const void *pa, const void *pb)
 {
-	struct NuFSEntry *ea = (struct NuFSEntry *)pa;
-	struct NuFSEntry *eb = (struct NuFSEntry *)pb;
+	struct YFSEntry *ea = (struct YFSEntry *)pa;
+	struct YFSEntry *eb = (struct YFSEntry *)pb;
 	// empty records go to the end
 	if (ea->name_[0] == 0x01)
 		return 1;
@@ -616,7 +616,7 @@ static int start_Cmp(const void *pa, const void *pb)
 
 void create(char *filename, unsigned long long maxsize)
 {
-	struct NuFSEntry tempentry;
+	struct YFSEntry tempentry;
 	int slot;
 
 	if (maxsize % 2 != 0)
@@ -630,7 +630,7 @@ void create(char *filename, unsigned long long maxsize)
 		int num_used_entries = 0; // how many entries of Directory are either used or deleted
 		int first_free_entry = -1; // where to put new entry
 		int tint;
-		struct NuFSEntry *pEntry;
+		struct YFSEntry *pEntry;
 		unsigned long long new_file_start = 0;
 		unsigned long long prev_file_end = 1;
 
@@ -640,7 +640,7 @@ void create(char *filename, unsigned long long maxsize)
 		// Calculate number of files
 		for (tint = 0; tint < 64; tint++)
 		{
-			pEntry = (struct NuFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
+			pEntry = (struct YFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
 			if (pEntry->name_[0] == 0x00) // end of directory
 			{
 				num_used_entries = tint;
@@ -672,7 +672,7 @@ void create(char *filename, unsigned long long maxsize)
 			// and the beginning of the current file (or the last data block if there are no more files).
 
 			unsigned long long this_file_start;
-			pEntry = (struct NuFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
+			pEntry = (struct YFSEntry *)(dir_copy + tint * 64); // points to the current directory entry
 
 			if (tint == num_used_entries || pEntry->name_[0] == 0x01)
 				this_file_start = num_blocks - 1; // index of the last block
@@ -696,7 +696,7 @@ void create(char *filename, unsigned long long maxsize)
 		}
 
 		// Add file record to Directory
-		pEntry = (struct NuFSEntry *)(Directory + first_free_entry * 64);
+		pEntry = (struct YFSEntry *)(Directory + first_free_entry * 64);
 		pEntry->start_ = new_file_start;
 		pEntry->maxsize_ = blocks_requested;
 		pEntry->size_ = 0;
@@ -706,7 +706,7 @@ void create(char *filename, unsigned long long maxsize)
 		{
 			// here we used the record that was marked with 0x00,
 			// so make sure to mark the next record with 0x00 if it exists
-			pEntry = (struct NuFSEntry *)(Directory + (num_used_entries + 1) * 64);
+			pEntry = (struct YFSEntry *)(Directory + (num_used_entries + 1) * 64);
 			pEntry->name_[0] = 0x00;
 		}
 
@@ -725,7 +725,7 @@ void create(char *filename, unsigned long long maxsize)
 // Read a file from a NuFS volume
 void read(char *filename)
 {
-	struct NuFSEntry tempentry;
+	struct YFSEntry tempentry;
 	FILE *tfile;
 	int tint, slot, retval, bytestoread;
 	char *buffer;
@@ -778,7 +778,7 @@ void write(char *filename)
 {
 	FILE *tfile;
 	int tint, slot, retval;
-	struct NuFSEntry tempentry;
+	struct YFSEntry tempentry;
 	unsigned long long tempfilesize;
 	char *buffer;
 
@@ -838,7 +838,7 @@ void write(char *filename)
 
 void delete(char *filename)
 {
-	struct NuFSEntry tempentry;
+	struct YFSEntry tempentry;
 	char delmarker = 0x01;
 	int slot;
 

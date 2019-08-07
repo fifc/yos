@@ -1,14 +1,14 @@
 ; Put Pixel Test Program (v1.0, Jan 7 2014)
 ; Written by Ian Seyler
 ;
-; NuOS compile:
+; YOS compile:
 ; nasm putpixel.asm -o putpixel.app
 
 
 [BITS 64]
 [ORG 0x0000000000200000]
 
-%INCLUDE "nuos.asm"
+%INCLUDE "yos.asm"
 
 start:					; Start of program label
 	mov rdx, 20			; Address for start of video memory

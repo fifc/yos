@@ -1,5 +1,5 @@
 ; =============================================================================
-; NuOS -- a 64-bit OS written in Assembly for x86-64 systems
+; YOS -- a 64-bit OS written in Assembly for x86-64 systems
 ; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
 ; COMMAND LINE INTERFACE
@@ -184,7 +184,7 @@ exit:
 ; Strings
 	help_text		db 'Built-in commands: LS, CLS, DEBUG, HELP, REBOOT, VER', 13, 0
 	not_found_msg		db 'Command not found', 13, 0
-	version_msg		db 'NuOS v0.1.2', 13, 0
+	version_msg		db 'YOS v0.1.2', 13, 0
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
@@ -197,7 +197,7 @@ exit:
 	testzone_string		db 'tz', 0
 
 	appextension:		db '.app', 0
-	prompt:			db 'nuos # ', 0
+	prompt:			db 'yos # ', 0
 
 ; -----------------------------------------------------------------------------
 ; os_string_find_char -- Find first location of character in a string

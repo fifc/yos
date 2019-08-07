@@ -1,7 +1,7 @@
-NuOS build scripts
+YOS build scripts
 ==========================
 
-The easiest way to create a NuOS build environment. These scripts will download and compile all of the components needed for using NuOS.
+The easiest way to create a YOS build environment. These scripts will download and compile all of the components needed for using YOS.
 
 
 Prerequisites
@@ -21,8 +21,8 @@ There are additional dependencies if you are planning on compiling Newlib. They 
 Initial configuration
 ---------------------
 
-	git clone https://github.com/ustime/nuos.git
-	cd nuos
+	git clone https://github.com/ustime/yos.git
+	cd yos
 	./setup.sh
 
 setup.sh automatically runs build, format, and install
@@ -70,7 +70,7 @@ Automatic:
 
 Manual:
 
-	cd nuos/programs/
+	cd yos/programs/
 	nasm sysinfo.asm -o ../../bin/sysinfo.app
 	cd ../../bin
 	./nufs nufs.image create sysinfo.app 2
@@ -79,7 +79,7 @@ Manual:
 	./run.sh
 
 
-NuOS should be running in the QEMU virtual machine and you should see a '>' prompt. You can now run the application by typing
+YOS should be running in the QEMU virtual machine and you should see a '>' prompt. You can now run the application by typing
 
 	sysinfo.app
 
@@ -87,7 +87,7 @@ NuOS should be running in the QEMU virtual machine and you should see a '>' prom
 Programs in C
 -------------
 
-C programs can be compiled to take advantage of the NuOS system calls. Standard ANSI C calls are available via Newlib (see the Newlib section below).
+C programs can be compiled to take advantage of the YOS system calls. Standard ANSI C calls are available via Newlib (see the Newlib section below).
 
 Automatic:
 
@@ -98,15 +98,15 @@ Manual:
 
 	cd src/
 	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o hello.o helloc.c
-	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libnuos.o libnuos.c
-	ld -T app.ld -o bin/helloc.app helloc.o libnuos.o
+	gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -fomit-frame-pointer -mno-red-zone -o libyos.o libyos.c
+	ld -T app.ld -o bin/helloc.app helloc.o libyos.o
 	cd bin
 	./nufs nufs.image create helloc.app 2
 	./nufs nufs.image write helloc.app
 	cd ..
 	./run.sh
 
-NuOS should be running in the QEMU virtual machine and you should see a 'NuOS> ' prompt. You can now run the application by typing
+YOS should be running in the QEMU virtual machine and you should see a 'YOS> ' prompt. You can now run the application by typing
 
 	helloc.app
 
@@ -130,6 +130,6 @@ The test application can also be built manually:
 	cd ..
 	./run.sh
 
-NuOS should be running in the QEMU virtual machine and you should see a 'nuos # ' prompt. You can now run the application by typing
+YOS should be running in the QEMU virtual machine and you should see a 'yos # ' prompt. You can now run the application by typing
 
 	test.app

@@ -1,5 +1,5 @@
 ===============================================================================
-NuOS -- License
+YOS -- License
 ===============================================================================
 
 Copyright (C) 2016-2017 Steven Yi -- 51318027@qq.com
@@ -16,7 +16,7 @@ modification, are permitted provided that the following conditions are met:
       notice, this list of conditions and the following disclaimer in the
       documentation and/or other materials provided with the distribution.
 
-    * Neither the name NuOS nor the names of any NuOS contributors
+    * Neither the name YOS nor the names of any YOS contributors
       may be used to endorse or promote products derived from this software
       without specific prior written permission.
 

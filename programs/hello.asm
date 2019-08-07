@@ -8,7 +8,7 @@
 [BITS 64]
 [ORG 0x0000000000200000]
 
-%INCLUDE "nuos.asm"
+%INCLUDE "yos.asm"
 
 start:					; Start of program label
 
@@ -17,4 +17,4 @@ start:					; Start of program label
 
 ret					; Return to OS
 
-hello_message: db 'Hello NuOS!', 13, 0
+hello_message: db 'Hello YOS!', 12, 0

@@ -1,8 +1,8 @@
 ; =============================================================================
-; NuOS -- a 64-bit OS for x86-64 systems
+; YOS -- a 64-bit OS for x86-64 systems
 ; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ;
-; NuOS stands for New OS :)
+; YOS stands for New OS :)
 ; =============================================================================
 
 [BITS 64]
@@ -13,7 +13,7 @@ global _start
 section .kernel
 
 _start:
-	jmp nuos_run			; Skip over the function table
+	jmp yfs_run			; Skip over the function table
 	nop
 
 	align 16
@@ -52,7 +52,7 @@ simuapp_setup:
         stosq
 	ret
 
-nuos_run:
+yfs_run:
 	call simuapp_setup
 	call init_64			; After this point we are in a working 64-bit environment
 	call init_pci			; Initialize the PCI bus

@@ -1,14 +1,14 @@
 ; System Information Program (v1.1, May 17 2013)
 ; Written by Ian Seyler
 ;
-; NuOS compile:
+; YOS compile:
 ; nasm sysinfo.asm -o sysinfo.app
 
 
 [BITS 64]
 [ORG 0x0000000000200000]
 
-%INCLUDE "nuos.asm"
+%INCLUDE "yos.asm"
 
 start:				; Start of program label
 

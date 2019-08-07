@@ -2,7 +2,7 @@
 // gcc -c -m64 -nostdlib -nostartfiles -nodefaultlibs -o libBareMetal.o libBareMetal.c
 // ld -T app.ld -o ethtoolc.app ethtoolc.o libBareMetal.o
 
-#include "libnuos.h"
+#include "libyos.h"
 
 void ethtool_send();
 void ethtool_receive();

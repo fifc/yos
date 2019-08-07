@@ -1,4 +1,4 @@
-# NuOS API #
+# YOS API #
 
 Version 0.6.0 - April 17, 2013
 
@@ -274,7 +274,7 @@ Assembly Example:
 	...
 	Packet: times 1518 db 0
 
-Notes: NuOS does not keep a buffer of received packets. This means that the OS will overwrite the last packet received as soon as it receives a new one. You can continuously poll the network by checking b_ethernet_rx often, but this is not ideal. NuOS allows for a network interrupt callback handler to be run whenever a packet is received. With a callback, your program will always be aware of when a packet was received. Check programs/ethtool.asm for an example of using a callback.
+Notes: YOS does not keep a buffer of received packets. This means that the OS will overwrite the last packet received as soon as it receives a new one. You can continuously poll the network by checking b_ethernet_rx often, but this is not ideal. YOS allows for a network interrupt callback handler to be run whenever a packet is received. With a callback, your program will always be aware of when a packet was received. Check programs/ethtool.asm for an example of using a callback.
 
 
 ## File

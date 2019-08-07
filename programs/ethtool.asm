@@ -16,7 +16,7 @@
 [BITS 64]
 [ORG 0x0000000000200000]
 
-%INCLUDE "nuos.asm"
+%INCLUDE "yos.asm"
 
 start:
 

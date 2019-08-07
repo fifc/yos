@@ -1,14 +1,14 @@
 /*
 3D stars!
 gcc -I newlib-2.1.0/newlib/libc/include/ -c 3dstars.c -o 3dstars.o
-ld -T app.ld -o 3dstars.app crt0.o 3dstars.o libnuoso libc.a libm.a
+ld -T app.ld -o 3dstars.app crt0.o 3dstars.o libyos.a libc.a libm.a
 */
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "libnuos.h"
+#include "libyos.h"
 
 void clear_screen();
 void put_pixel(unsigned int x, unsigned int y, unsigned char red, unsigned char blue, unsigned char green);
