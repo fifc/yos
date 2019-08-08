@@ -1,14 +1,14 @@
 ; =============================================================================
-; NuBoot MBR -- a 64-bit OS loader written in Assembly for x86-64 systems
+; YBoot MBR -- a 64-bit OS loader written in Assembly for x86-64 systems
 ; Copyright (C) 2016-2017 Steven Yi -- see LICENSE.TXT
 ; Copyright (C) 2008-2016 Return Infinity -- see LICENSE.TXT
 ;
-; This Master Boot Record will load NuBoot from a pre-defined location on the
+; This Master Boot Record will load YBoot from a pre-defined location on the
 ; hard drive without making use of the file system.
 ;
-; In this code we are expecting a BMFS-formatted drive. With BMFS the NuBoot
+; In this code we are expecting a BMFS-formatted drive. With BMFS the YBoot
 ; binary is required to start at sector 16 (8192 bytes from the start). A small
-; ckeck is made to make sure NuBoot was loaded by comparing a signiture.
+; ckeck is made to make sure YBoot was loaded by comparing a signiture.
 ; =============================================================================
 
 USE16
@@ -103,16 +103,16 @@ check_A20:
 
 	mov eax, 64			; Number of sectors to load. 64 sectors = 32768 bytes
 	mov ebx, 16			; Start immediately after directory (offset 8192)
-	mov cx, 0x8000			; NuBoot expects to be loaded at 0x8000
+	mov cx, 0x8000			; YBoot expects to be loaded at 0x8000
 
 load_nextsector:
 	call readsector			; Load 512 bytes
 	dec eax
-	cmp eax, 0
+	;cmp eax, 0
 	jnz load_nextsector
 
 	mov eax, [0x8000]
-	cmp eax, 0x00018BE9		; Match against the NuBoot binary
+	cmp eax, 0x00018BE9		; Match against the YBoot binary
 	jne magic_fail
 
 ; At this point we are done with real mode and BIOS interrupts. Jump to 32-bit mode.
@@ -224,7 +224,7 @@ dw 0xFFFF, 0x0000, 0x9A00, 0x00CF	; 32-bit code descriptor
 dw 0xFFFF, 0x0000, 0x9200, 0x00CF	; 32-bit data descriptor
 gdt32_end:
 
-msg_Load db "NuFS MBR v1.0", 0
+msg_Load db "YFS MBR v1.0", 0
 msg_MagicFail db " - Error!", 0
 
 times 446-$+$$ db 0

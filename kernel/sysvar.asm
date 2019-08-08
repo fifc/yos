@@ -44,7 +44,7 @@ ahci_cmdtable:		equ 0x0000000000072000	; 57344 bytes	0x072000 -> 0x07FFFF
 cli_temp_string:	equ 0x0000000000080000	; 1024 bytes	0x080000 -> 0x0803FF
 os_temp_string:		equ 0x0000000000080400	; 1024 bytes	0x080400 -> 0x0807FF
 os_args:		equ 0x0000000000080C00
-nufs_directory:		equ 0x0000000000090000	; 4096 bytes	0x090000 -> 0x090FFF
+yfs_directory:		equ 0x0000000000090000	; 4096 bytes	0x090000 -> 0x090FFF
 os_filehandlers:	equ 0x0000000000091000	; 64 bytes (1x64)
 os_filehandlers_seek:	equ 0x0000000000092000	; 512 bytes (8x64)
 sys_ROM:		equ 0x00000000000A0000	; 393216 bytes	0x0A0000 -> 0x0FFFFF
@@ -77,7 +77,7 @@ os_NetMAC:		equ os_SystemVariables + 80
 os_HPETAddress:		equ os_SystemVariables + 88
 ahci_base:		equ os_SystemVariables + 96
 os_NetworkCallback:	equ os_SystemVariables + 104
-nufs_TotalBlocks:	equ os_SystemVariables + 112
+yfs_TotalBlocks:	equ os_SystemVariables + 112
 os_KeyboardCallback:	equ os_SystemVariables + 120
 os_ClockCallback:	equ os_SystemVariables + 128
 os_net_TXBytes:		equ os_SystemVariables + 136

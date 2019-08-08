@@ -129,7 +129,7 @@ print_ver:
 dir:
 	mov rdi, cli_temp_string
 	mov rsi, rdi
-	call os_nufs_file_list
+	call os_yfs_file_list
 	call os_output
 	jmp os_command_line
 
@@ -183,9 +183,9 @@ exit:
 	ret
 
 ; Strings
-	help_text		db 'Built-in commands: LS, CLS, DBG, HELP, REBOOT, VER', 13, 0
+	help_text		db 'Built-in commands: ls, cls, dbg, help, reboot, ver', 13, 0
 	not_found_msg		db 'Command not found', 13, 0
-	version_msg		db 'YOS v0.1.2', 13, 0
+	version_msg		db 'YOS v0.1.8', 13, 0
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
@@ -440,10 +440,10 @@ os_hex_string_to_int_exit:
 
 
 ; -----------------------------------------------------------------------------
-; os_nufs_file_list -- Generate a list of files on disk
+; os_yfs_file_list -- Generate a list of files on disk
 ; IN:	RDI = location to store list
 ; OUT:	RDI = pointer to end of list
-os_nufs_file_list:
+os_yfs_file_list:
 	push rdi
 	push rsi
 	push rcx
@@ -470,15 +470,15 @@ os_nufs_file_list:
 	call os_string_copy
 	add rdi, rcx
 
-	mov rsi, nufs_directory
+	mov rsi, yfs_directory
 	mov rbx, rsi
 
-os_nufs_list_next:
+os_yfs_list_next:
 	cmp byte [rbx], 0x00
-	je os_nufs_list_done
+	je os_yfs_list_done
 
 	cmp byte [rbx], 0x01
-	jle os_nufs_list_skip
+	jle os_yfs_list_skip
 
 	mov rsi, rbx
 	call os_string_length
@@ -506,12 +506,12 @@ os_nufs_list_next:
 	mov al, 13
 	stosb
 
-os_nufs_list_skip:
+os_yfs_list_skip:
 	add rbx, 64
-	cmp rbx, nufs_directory + 0x1000
-	jne os_nufs_list_next
+	cmp rbx, yfs_directory + 0x1000
+	jne os_yfs_list_next
 
-os_nufs_list_done:
+os_yfs_list_done:
 	xor al, al
 	stosb
 
