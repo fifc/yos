@@ -2,13 +2,13 @@
 
 cd programs/
 
-nasm $1.asm -o ../bin/$1.app
+nasm $1.asm -o ../bin/$1
 
-if [ $? -eq 0 ]; then
-	cd ../bin
-	./nufs yos.img create $1.app 2
-	./nufs yos.img write $1.app
-	cd ..
-else
+if [ $? -ne 0 ]; then
 	echo "Error"
+else
+	cd ../bin
+	./yfs yos.img create $1 2
+	./yfs yos.img write $1
+	cd ..
 fi

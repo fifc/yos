@@ -78,7 +78,8 @@ os_command_line:
 	; Program found, load and execute
 	call os_file_read
 	call os_file_close
-	call programlocation		; Call the program just loaded
+	mov rbx, programlocation	
+	call rbx; Call the program just loaded
 	jmp os_command_line		; Jump back to the CLI on program completion
 
 v_run:

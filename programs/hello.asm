@@ -17,4 +17,4 @@ start:					; Start of program label
 
 ret					; Return to OS
 
-hello_message: db 'Hello YOS!', 12, 0
+hello_message: db 'Hello YOS!', 13, 0
