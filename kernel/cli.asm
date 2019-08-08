@@ -41,9 +41,9 @@ os_command_line:
 	call os_string_compare
 	jc near dir
 
-	mov rdi, vv_string		; 'DIR' entered?
+	mov rdi, v_string		; 'v' entered?
 	call os_string_compare
-	jc near vv_exec
+	jc near v_run
 
 	mov rdi, ver_string		; 'VER' entered?
 	call os_string_compare
@@ -81,13 +81,14 @@ os_command_line:
 	call programlocation		; Call the program just loaded
 	jmp os_command_line		; Jump back to the CLI on program completion
 
-vv_exec:
-	;call os_dump_sys_reg
-	;call os_debug_dump_reg
+v_run:
+	call os_dump_sys_reg
+	call os_debug_dump_reg
 
 	mov rax, 0x7788
-	call simuapp_start
-	jmp os_command_line
+        ;call app_addr
+        mov rbx, app_addr
+	call rbx
 
 	cmp rax, 0x1234
 	je vv_success
@@ -182,13 +183,13 @@ exit:
 	ret
 
 ; Strings
-	help_text		db 'Built-in commands: LS, CLS, DEBUG, HELP, REBOOT, VER', 13, 0
+	help_text		db 'Built-in commands: LS, CLS, DBG, HELP, REBOOT, VER', 13, 0
 	not_found_msg		db 'Command not found', 13, 0
 	version_msg		db 'YOS v0.1.2', 13, 0
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
-	vv_string		db 'v', 0
+	v_string		db 'v', 0
 	ver_string		db 'ver', 0
 	exit_string		db 'exit', 0
 	help_string		db 'help', 0

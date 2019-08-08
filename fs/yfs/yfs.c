@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 		printf("Error: Unable to open disk '%s'\n", diskname);
 		exit(0);
 	}
-	else								// Opened ok, is it a valid NuFS disk?
+	else								// Opened ok, is it a valid YFS disk?
 	{
 		fseek(disk, 0, SEEK_END);
 		disksize = ftell(disk) / 1048576;			// Disk size in MiB
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 		retval = fread(Directory, 4096, 1, disk);		// Read 4096 bytes to the Directory buffer
 		rewind(disk);
 
-		if (strcasecmp(DiskInfo, fs_tag) != 0)			// Is it a NuFS formatted disk?
+		if (strcasecmp(DiskInfo, fs_tag) != 0)			// Is it a YFS formatted disk?
 		{
 			if (strcasecmp(s_format, command) == 0)
 			{
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				printf("Error: Not a valid NuFS drive (Disk is not NuFS formatted).\n");
+				printf("Error: Not a valid YFS drive (Disk is not YFS formatted).\n");
 			}
 			fclose(disk);
 			return 0;
@@ -272,7 +272,7 @@ void format()
 {
 	memset(DiskInfo, 0, 512);
 	memset(Directory, 0, 4096);
-	memcpy(DiskInfo, fs_tag, 4);                    // Add the 'NuFS' tag
+	memcpy(DiskInfo, fs_tag, 4);                    // Add the 'YFS' tag
 	fseek(disk, 1024, SEEK_SET);                    // Seek 1KiB in for disk information
 	fwrite(DiskInfo, 512, 1, disk);                 // Write 512 bytes for the DiskInfo
 	fseek(disk, 4096, SEEK_SET);                    // Seek 4KiB in for directory
@@ -722,7 +722,7 @@ void create(char *filename, unsigned long long maxsize)
 	}
 }
 
-// Read a file from a NuFS volume
+// Read a file from a YFS volume
 void read(char *filename)
 {
 	struct YFSEntry tempentry;
@@ -732,7 +732,7 @@ void read(char *filename)
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
-		printf("Error: File not found in NuFS.\n");
+		printf("Error: File not found in YFS.\n");
 	}
 	else
 	{
@@ -773,7 +773,7 @@ void read(char *filename)
 }
 
 
-// Write a file to a NuFS volume
+// Write a file to a YFS volume
 void write(char *filename)
 {
 	FILE *tfile;
@@ -784,7 +784,7 @@ void write(char *filename)
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
-		printf("Error: File not found in NuFS. A file entry must first be created.\n");
+		printf("Error: File not found in YFS. A file entry must first be created.\n");
 		return;
 	}
 	if ((tfile = fopen(filename, "rb")) == NULL)
@@ -792,14 +792,14 @@ void write(char *filename)
 		printf("Error: Could not open local file '%s'\n", tempentry.name_);
 		return;
 	}
-	// Is there enough room in NuFS?
+	// Is there enough room in YFS?
 	fseek(tfile, 0, SEEK_END);
 	tempfilesize = ftell(tfile);
 	rewind(tfile);
 	if ((tempentry.maxsize_<<21) < tempfilesize)
 	{
 		fclose(tfile);
-		printf("Error: Not enough reserved space in NuFS.\n");
+		printf("Error: Not enough reserved space in YFS.\n");
 		return;
 	}
 	fseek(disk, tempentry.start_<<21, SEEK_SET); // Skip to the starting block in the disk
@@ -844,7 +844,7 @@ void delete(char *filename)
 
 	if (0 == findfile(filename, &tempentry, &slot))
 	{
-		printf("Error: File not found in NuFS.\n");
+		printf("Error: File not found in YFS.\n");
 	}
 	else
 	{

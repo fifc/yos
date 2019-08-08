@@ -9,51 +9,15 @@
 ;[ORG 0x0000000000100000]
 
 global _start
-
 section .kernel
 
 _start:
-	jmp yfs_run			; Skip over the function table
-	nop
 
-	align 16
-	dq os_output			; 0x0010
-	dq os_output_chars		; 0x0018
-	dq os_input			; 0x0020
-	dq os_input_key			; 0x0028
-	dq os_smp_enqueue		; 0x0030
-	dq os_smp_dequeue		; 0x0038
-	dq os_smp_run			; 0x0040
-	dq os_smp_wait			; 0x0048
-	dq os_mem_allocate		; 0x0050
-	dq os_mem_release		; 0x0058
-	dq os_ethernet_tx		; 0x0060
-	dq os_ethernet_rx		; 0x0068
-	dq os_file_open			; 0x0070
-	dq os_file_close		; 0x0078
-	dq os_file_read			; 0x0080
-	dq os_file_write		; 0x0088
-	dq os_file_seek			; 0x0090
-	dq os_file_query		; 0x0098
-	dq os_file_create		; 0x00A0
-	dq os_file_delete		; 0x00A8
-	dq os_system_config		; 0x00B0
-	dq os_system_misc		; 0x00B8
-        dq os_get_proc_time             ; 0x00C0
-        dq os_set_proc_start_time       ; 0x00C8
-	align 16
-
-simuapp_start equ 0x0000000000200000
-simuapp_setup:
-        mov rax, 0x0000c300001234b8 ; machine code for:  mov rax 0x1234 + ret
-        mov rdi, simuapp_start
-        stosq
-        xor eax, eax                ; this also set all rax to 0
-        stosq
-	ret
-
-yfs_run:
+align 16
 	call simuapp_setup
+        mov rbx, app_addr
+	call rbx
+
 	call init_64			; After this point we are in a working 64-bit environment
 	call init_pci			; Initialize the PCI bus
 	call init_hdd			; Initialize the disk
@@ -150,6 +114,44 @@ ap_process:				; Set the status byte to "Busy" and run the code
 	jmp ap_clear			; Reset the stack, clear the registers, and wait for something else to work on
 
 
+app_addr equ 0x0000000000800000
+;app_addr equ 0x0000000000200000
+simuapp_setup:
+        mov rax, 0x0000c300001234b8 ; machine code for:
+                                    ;     mov rax, 0x1234
+                                    ;     ret
+        mov rdi, app_addr
+        stosq
+        ;xor eax, eax                ; this also set all rax to 0
+        ;stosq
+	ret
+
+align 16
+	dq os_output			; 0x0010
+	dq os_output_chars		; 0x0018
+	dq os_input			; 0x0020
+	dq os_input_key			; 0x0028
+	dq os_smp_enqueue		; 0x0030
+	dq os_smp_dequeue		; 0x0038
+	dq os_smp_run			; 0x0040
+	dq os_smp_wait			; 0x0048
+	dq os_mem_allocate		; 0x0050
+	dq os_mem_release		; 0x0058
+	dq os_ethernet_tx		; 0x0060
+	dq os_ethernet_rx		; 0x0068
+	dq os_file_open			; 0x0070
+	dq os_file_close		; 0x0078
+	dq os_file_read			; 0x0080
+	dq os_file_write		; 0x0088
+	dq os_file_seek			; 0x0090
+	dq os_file_query		; 0x0098
+	dq os_file_create		; 0x00A0
+	dq os_file_delete		; 0x00A8
+	dq os_system_config		; 0x00B0
+	dq os_system_misc		; 0x00B8
+        dq os_get_proc_time             ; 0x00C0
+        dq os_set_proc_start_time       ; 0x00C8
+
 ; Includes
 %include "init.asm"
 %include "syscalls.asm"
@@ -159,5 +161,5 @@ ap_process:				; Set the status byte to "Busy" and run the code
 %include "font.asm"
 %include "sysvar.asm"			; Include this last to keep the read/write variables away from the code
 
-;times 16384 - ($ - $$) db 0
+times 0x4000 - ($ - $$) db 0
 

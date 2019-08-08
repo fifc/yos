@@ -14,7 +14,7 @@ hextable: 		db '0123456789ABCDEF'
 
 ; Strings
 system_status_header:	db 'YOS v0.1.1', 0
-readymsg:		db 'YOS is ready', 0
+readymsg:		db 'YOS OK', 0
 cpumsg:			db '[cpu: ', 0
 memmsg:			db ']  [mem: ', 0
 networkmsg:		db ']  [net: ', 0
@@ -34,8 +34,9 @@ startupapp:		db 'startup.app', 0
 sys_idt:		equ 0x0000000000000000	; 4096 bytes	0x000000 -> 0x000FFF	Interrupt descriptor table
 sys_gdt:		equ 0x0000000000001000	; 4096 bytes	0x001000 -> 0x001FFF	Global descriptor table
 sys_pml4:		equ 0x0000000000002000	; 4096 bytes	0x002000 -> 0x002FFF	PML4 table
-sys_pdp:		equ 0x0000000000003000	; 4096 bytes	0x003000 -> 0x003FFF	PDP table
-sys_Pure64:		equ 0x0000000000004000	; 16384 bytes	0x004000 -> 0x007FFF	Pure64 system data
+sys_pdpl:		equ 0x0000000000003000	; 4096 bytes	0x003000 -> 0x003FFF	PDP table low
+sys_pdph:		equ 0x0000000000004000	; 4096 bytes	0x004000 -> 0x004FFF	PDP table high
+sys_yboot:		equ 0x0000000000005000	; 12K	        0x005000 -> 0x007FFF	yboot system data
 sys_pd:			equ 0x0000000000010000	; 262144 bytes	0x010000 -> 0x04FFFF	Page directory
 ahci_cmdlist:		equ 0x0000000000070000	; 4096 bytes	0x070000 -> 0x070FFF
 ahci_receivedfis:	equ 0x0000000000071000	; 4096 bytes	0x071000 -> 0x071FFF
@@ -207,7 +208,7 @@ this_is_the_end:	db 'This is the end.'
 
 ;------------------------------------------------------------------------------
 
-SYS64_CODE_SEL	equ 8		; defined by Pure64
+SYS64_CODE_SEL	equ 8		; defined by yboot
 
 ; =============================================================================
 ; EOF

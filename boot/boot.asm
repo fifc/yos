@@ -12,15 +12,15 @@
 ; the NuBoot binary. The maximum size of the kernel or software is 26KiB.
 ;
 ; Windows - copy /b boot.sys + kernel64.sys
-; Unix - cat nuboot.sys kernel64.sys > boot.sys
+; Unix - cat yboot.sys kernel.sys > boot.sys
 ; Max size of the resulting boot.sys is 32768 bytes (32KiB)
 ; =============================================================================
 
 USE32
 ORG 0x00008000
 
-NUBOOT_SIZE     equ 6144                ; Pad NuBoot to this length
-KERNEL_PAYLOAD equ 0x8000+NUBOOT_SIZE
+YBOOT_SIZE     equ 6144                ; Pad NuBoot to this length
+KERNEL_PAYLOAD equ 0x8000 + YBOOT_SIZE
 
 start:
 	jmp start32			; This command will be overwritten with 'NOP's before the AP's are started
@@ -594,15 +594,17 @@ elf_loop:
         add rsi, KERNEL_PAYLOAD
         mov rdi, [rax+ELF64_Text_Header.text_mem_offset]
         mov r8, rcx
-        mov rcx, [rax+ELF64_Text_Header.text_mem_offset]
-	add rcx, 7
+        mov rcx, [rax+ELF64_Text_Header.text_seg_mem_size]
 	shr rcx, 3
 	cld
         rep movsq
         mov rcx, r8
 elf_continue:
+        dec rcx
+        jz elf_done
         add rax, rdx
         loop elf_loop
+elf_done:
 	mov rbx, [KERNEL_PAYLOAD+ELF64_Header.text_entry]
 	jmp elf_start
 
@@ -611,7 +613,7 @@ non_elf:
 ; Move the trailing binary to its final location
 	mov rsi, KERNEL_PAYLOAD		; Memory offset to end of pure64.sys
 	mov rdi, 0x100000		; Destination address at the 1MiB mark
-	mov rcx, ((32768 - NUBOOT_SIZE) / 8)
+	mov rcx, ((32768 - YBOOT_SIZE) / 8)
 	rep movsq			; Copy 8 bytes at a time
 
 elf_start:
@@ -646,23 +648,12 @@ elf_start:
 	cmp rbx, 0
 	je non_elf_start
 	cmp rbx, 0x100000
-	je start_elf_kernel
+	je 0x100000
+
 	mov ax, 0x0006
 	call os_move_cursor
 	mov rsi, msg_elf_entry_err
 	call os_print_string
-
-start_elf_kernel:
-	call simuapp_setup
-        call 0x0000000000200000
-	jmp rbx
-simuapp_setup:
-        mov rax, 0x0000c300001234b8 ; machine code for:  mov rax 0x1234 + ret
-        mov rdi, 0x0000000000200000
-        stosq
-	xor rax, rax
-        stosq
-        ret
 
 non_elf_start:
 
@@ -708,7 +699,7 @@ normal_start:
 %include "sysvar.asm"
 
 ; Pad to an even KB file (6 KiB)
-times NUBOOT_SIZE-($-$$) db 0x90
+times YBOOT_SIZE-($-$$) db 0x90
 
 
 ;;  NASM structure definition for ELF file header
@@ -740,7 +731,7 @@ ENDSTRUC
 STRUC ELF64_Text_Header
         .segment_type:          resd 1
         .flags:                 resd 1
-        .text_file_offset:     resq 1
+        .text_file_offset:      resq 1
         .text_mem_offset:       resq 1
         .reserved:              resq 1
         .text_seg_file_size:    resq 1

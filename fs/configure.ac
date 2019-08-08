@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([NuFS], [1.2], [51318027@qq.com])
+AC_INIT([YFS], [1.2], [51318027@qq.com])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([yfs/yfs.c])
 AC_CONFIG_HEADERS([config.h])
