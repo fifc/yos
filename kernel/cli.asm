@@ -41,10 +41,6 @@ os_command_line:
 	call os_string_compare
 	jc near dir
 
-	mov rdi, v_string		; 'v' entered?
-	call os_string_compare
-	jc near v_run
-
 	mov rdi, ver_string		; 'VER' entered?
 	call os_string_compare
 	jc near print_ver
@@ -56,10 +52,6 @@ os_command_line:
 	mov rdi, help_string		; 'HELP' entered?
 	call os_string_compare
 	jc near print_help
-
-	mov rdi, debug_string		; 'DEBUG' entered?
-	call os_string_compare
-	jc near debug
 
 	mov rdi, reboot_string		; 'REBOOT' entered?
 	call os_string_compare
@@ -81,30 +73,6 @@ os_command_line:
 	mov rbx, programlocation	
 	call rbx; Call the program just loaded
 	jmp os_command_line		; Jump back to the CLI on program completion
-
-v_run:
-	call os_dump_sys_reg
-	call os_debug_dump_reg
-
-	mov rax, 0x7788
-        ;call app_addr
-        mov rbx, app_addr
-	call rbx
-
-	cmp rax, 0x1234
-	je vv_success
-	mov rsi, vv_err_msg
-	call os_output
-	jmp vv_exit
-	
-vv_success:
-	mov rsi, vv_success_msg
-	call os_output
-vv_exit:
-	jmp os_command_line
-
-vv_err_msg     db 'error!',13,0
-vv_success_msg db 'success!',13,0
 
 fail:					; We didn't get a valid command or program name
 	mov rsi, not_found_msg
@@ -184,21 +152,18 @@ exit:
 	ret
 
 ; Strings
-	help_text		db 'Built-in commands: ls, cls, dbg, help, reboot, ver', 13, 0
+	help_text		db 'Built-in commands: ls, cls, help, reboot, ver', 13, 0
 	not_found_msg		db 'Command not found', 13, 0
 	version_msg		db 'YOS v0.1.8', 13, 0
 
 	ls_string		db 'ls', 0
 	cls_string		db 'cls', 0
-	v_string		db 'v', 0
 	ver_string		db 'ver', 0
 	exit_string		db 'exit', 0
 	help_string		db 'help', 0
-	debug_string		db 'dbg', 0
 	reboot_string		db 'reboot', 0
 	testzone_string		db 'tz', 0
 
-	appextension:		db '.app', 0
 	prompt:			db 'yos # ', 0
 
 ; -----------------------------------------------------------------------------

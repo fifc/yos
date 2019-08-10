@@ -42,10 +42,6 @@ align 16
 
 align 16
 start:
-	call simuapp_setup
-        mov rbx, app_addr
-	call rbx
-
 	call init_64			; After this point we are in a working 64-bit environment
 	call init_pci			; Initialize the PCI bus
 	call init_hdd			; Initialize the disk
@@ -139,19 +135,6 @@ ap_process:				; Set the status byte to "Busy" and run the code
 	call rax			; Run the code
 
 	jmp ap_clear			; Reset the stack, clear the registers, and wait for something else to work on
-
-
-app_addr equ 0x0000000000800000
-;app_addr equ 0x0000000000200000
-simuapp_setup:
-        mov rax, 0x0000c300001234b8 ; machine code for:
-                                    ;     mov rax, 0x1234
-                                    ;     ret
-        mov rdi, app_addr
-        stosq
-        ;xor eax, eax                ; this also set all rax to 0
-        ;stosq
-	ret
 
 ; Includes
 %include "init.asm"
